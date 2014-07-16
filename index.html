@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html ng-app="testHarnessApp">
+  <head>
+    <script src="js/angular.js" type="text/javascript"></script>
+    <script src="js/mockJapi.js" type="text/javascript"></script>
+    <script src="js/testHarnessApp.js" type="text/javascript"></script>
+  </head>
+  <body ng-controller="testCtrl">
+    <div class="container">
+      <div ng-repeat="(key, test) in tests">
+        <!--
+        <ng-include src="'partials/oneTestResult.html'" />
+        -->
+        <span class="testName">{{key}}</span>
+        <!--
+        <ng-include src="'partials/oneTestResult.html'" />
+        <span class="testFn">{{test.functionCall.toString()}}</span>
+        -->
+        <span class="testArgs">{{test.arguments}}</span>
+        <span class="testExpected">{{test.expected}}</span>
+        <span class="testActual">{{test.actual}}</span>
+        <span class="testResult">{{test.result}}</span>
+      </div>
+    </div>
+  </body>
+</html>

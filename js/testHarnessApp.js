@@ -1,52 +1,58 @@
-testHarness = angular.module("testHarnessApp", [])
+var testHarness = angular.module("testHarnessApp", [])
 .controller("testCtrl", function ($scope) {
-	
-	var japi = new Japi();
 
-	$scope.tests = {
-		peerPing: [japi.Peer.Ping, "", ""],
-		peerListing: [japi.PeerList.List, "", ""],
-        savePeerListing: [japi.PeerList.Save, "PeerList UUID, XML", ""]
-		getPeerList: [japi.PeerList.Get, "PeerList ID", ""],
-		deletePeerList: [japi.PeerList.Delete, "PeerList ID", ""],
-		pollResults: [japi.Peer.Polls.Results, "JID/Cambrian ID, POLL ID", ""],
-		pollSave: [japi.Polls.Save, "POLL_UUID, POLL XML", ""],
-		pollsList: [japi.Polls.List, "", ""],
-		pollGet: [japi.Polls.Get, "POLL_UUID", ""],
-		pollStart: [japi.Polls.Start, "POLL_UUID", ""],
-		pollResults: [japi.Polls.Results, "POLL_UUID", ""],
-		pollStop: [japi.Polls.Stop, "POLL_UUID", ""],
-		pollDelete: [japi.Polls.Delete, "POLL ID"],
-		templateSave: [japi.Polls.MyTemplates.Save, "TEMPLATE_UUID, TEMPLATE XML", ""],
-		templateGet: [japi.Polls.MyTemplates.Get, "TEMPLATE_UUID", ""],
-		templatesList: [japi.Polls.MyTemplates.List, "", ""],
-		templatesDelete: [japi.Polls.MyTemplates.Delete, "TEMPLATE_UUID", ""] }
+var japi = new Japi();
 
-	$scope.results = [];
-	/* One result object:
-	{
-		title: peerPing,
-		call: japi.Peer.Ping,
-		args: "",
-		expected: undefined,
-		result: true
-	}
-	*/
-	$scope.test = function () {
+  $scope.tests = {
+    peerPing: {functionCall: japi.Peer.Ping, arguments: [ ], expected: ""},
+    peerListing: {functionCall: japi.PeerList.List, arguments: [ ], expected: ""},
+    savePeerListing: {functionCall: japi.PeerList.Save, arguments: [ "PeerList UUID", "XML"], expected: ""},
+    getPeerList: {functionCall: japi.PeerList.Get, arguments: [ "PeerList ID"], expected: ""},
+    deletePeerList: {functionCall: japi.PeerList.Delete, arguments: [ "PeerList ID"], expected: ""},
+    pollResults: {functionCall: japi.Peer.Polls.Results, arguments: [ "JID/Cambrian ID", "POLL ID"], expected: ""},
+		pollSave: {functionCall: japi.Polls.Save, arguments: [ "POLL_UUID", "POLL XML"], expected: ""},
+		pollsList: {functionCall: japi.Polls.List, arguments: [], expected: ""},
+		pollGet: {functionCall: japi.Polls.Get, arguments: [ "POLL_UUID"], expected: ""},
+		pollStart: {functionCall: japi.Polls.Start, arguments: [ "POLL_UUID"], expected: ""},
+		pollResults: {functionCall: japi.Polls.Results, arguments: [ "POLL_UUID"], expected: ""},
+		pollStop: {functionCall: japi.Polls.Stop, arguments: [ "POLL_UUID"], expected: ""},
+		pollDelete: {functionCall: japi.Polls.Delete, arguments: [ "POLL ID"], expected: ""},
+		templateSave: {functionCall: japi.Polls.MyTemplates.Save, arguments: [ "TEMPLATE_UUID", "TEMPLATE XML"], expected: ""},
+		templateGet: {functionCall: japi.Polls.MyTemplates.Get, arguments: ["TEMPLATE_UUID"], expected: ""},
+		templatesList: {functionCall: japi.Polls.MyTemplates.List, arguments: [], expected: ""},
+		templatesDelete: {functionCall: japi.Polls.MyTemplates.Delete, arguments: [ "TEMPLATE_UUID"], expected: ""} 
+  }
+
+  runTests($scope)
+});
+
+  function runTests($scope) {
+    console.log('Starting runTests');
+    console.log($scope);
 		for (var prop in $scope.tests) {
-			var badProp = !$scope.tests.hasOwnProperty[prop];
+			var badProp = !$scope.tests.hasOwnProperty(prop);
 			if(badProp) { continue };
 			var value = $scope.tests[prop]
-			var testFn = value[0];
-			var testArgs = value[1];
-			var testExpected = value[2];
+			var testFn = value.functionCall;
+			var testArgs = value.arguments;
+			var testExpected = value.expected
 			var testResult = null; // true: test passed. false: test failed. null: test has not completed
-			var result = testFn(testArgs);
-			if(result === testExpected){
-				testResult = true;
-			} else {
-				testResult = false;
-			}
+      console.log('Testing', prop);
+      var testCallback = function(err, resultData){
+        console.log("Hello from a test callback");
+        if(err){
+          value.result = false;
+          value.errorMessage = err;
+        } else {
+          value.result = true;
+          value.actual = resultData;
+        }
+      };
+      //var fullArgs = new Array(testArgs);
+      //fullArgs.push(testCallback);
+			testArgs.push(testCallback);
+      console.log(testArgs);
+      testFn.apply(this, testArgs);
+      
 		}
 	}
-});
