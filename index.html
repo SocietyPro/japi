@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="stylesheet.css">
   </head>
   <body ng-controller="testCtrl">
-    <button ng-click="runTests()">Run Tests</button>
+    <button ng-click="runTests()" ng-disabled="testsDisabled">Run Tests</button>
     <div class="container">
       <div ng-repeat="(key, test) in tests">
         <div id="testContainer" ng-class="{pass: test.succeeded === true, fail: test.succeeded === false, pending: test.succeeded === undefined}">
