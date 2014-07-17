@@ -20,8 +20,7 @@ var Japi = function(){
   }
 
   ret.PeerList.List = function(callback){
-    return callback(null, ["tim", "bob", "charlie"]);
-    //return(["tim", "bob", "charlie"])
+    setTimeout(function(){ callback(null, false) }, 200);
   };
 
   ret.PeerList.Save = function(UUID, XML, callback){
@@ -73,28 +72,3 @@ var Japi = function(){
 
   return ret;
 }
-
-var myJapi = new Japi();
-myJapi.PeerList.List(function(){
-  console.log("Hello from the callback to myJapi.PeerList.List");
-})
-
-  /*
-ret.Peer.Ping
-ret.PeerList.List
-ret.PeerList.Save
-ret.PeerList.Get
-ret.PeerList.Delete
-ret.Peer.Polls.Results
-ret.Polls.Save
-ret.Polls.List
-ret.Polls.Get
-ret.Polls.Start
-ret.Polls.Results
-ret.Polls.Stop
-ret.Polls.Delete
-ret.Polls.MyTemplates.Save
-ret.Polls.MyTemplates.Get
-ret.Polls.MyTemplates.List
-ret.Polls.MyTemplates.Delete
-*/
