@@ -12,10 +12,10 @@
       <div ng-repeat="(key, test) in tests">
         <div id="testContainer" ng-class="{pass: test.succeeded === true, fail: test.succeeded === false, pending: test.succeeded === undefined}">
           <div id="textStuff">
-            <h3>{{test.name}}</h3>
+            <strong>{{test.name}}</strong><br />
             Call: {{test.functionCall}} Arguments: {{test.arguments}}<br />
-            Actual: {{test.actual}}<br />
-            Expected: {{test.expected}}
+            Actual Return: {{test.actual}}<br />
+            Expected Return: {{test.expected}}
           </div>
           <div id="prettyPicture">
             <img ng-show="test.succeeded == true" src="images/green-check-mark.png">

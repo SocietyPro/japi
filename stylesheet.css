@@ -11,9 +11,10 @@
 }
 
 #testContainer {
-	width: 800px;
+	width: 600px;
 	padding: 8px;
 	margin: 10px;
+	border-radius: 10px;
 }
 
 #textStuff {
