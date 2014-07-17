@@ -1,30 +1,32 @@
 var testHarness = angular.module("testHarnessApp", [])
 .controller("testCtrl", function ($scope, $q, $timeout) {
+  $scope.testsDisabled = false; // Flag meaning "the test suite is complete, don't run again"
 
   var japi = new Japi();
 
   $scope.tests = [
-    {name: "peerPing", functionCall: japi.Peer.Ping, arguments: [ ], expected: false},
-    {name: "peerListing", functionCall: japi.PeerList.List, arguments: [ ], expected: ""},
-    {name: "savePeerListing", functionCall: japi.PeerList.Save, arguments: [ "PeerList UUID", "XML"], expected: ""},
-    {name: "getPeerList", functionCall: japi.PeerList.Get, arguments: [ "PeerList ID"], expected: ""},
-    {name: "deletePeerList", functionCall: japi.PeerList.Delete, arguments: [ "PeerList ID"], expected: ""},
-    {name: "pollResults", functionCall: japi.Peer.Polls.Results, arguments: [ "JID/Cambrian ID", "POLL ID"], expected: ""},
-    {name: "pollSave", functionCall: japi.Polls.Save, arguments: [ "POLL_UUID", "POLL XML"], expected: ""},
-    {name: "pollsList", functionCall: japi.Polls.List, arguments: [], expected: ""},
-    {name: "pollGet", functionCall: japi.Polls.Get, arguments: [ "POLL_UUID"], expected: ""},
-    {name: "pollStart", functionCall: japi.Polls.Start, arguments: [ "POLL_UUID"], expected: ""},
-    {name: "pollResults", functionCall: japi.Polls.Results, arguments: [ "POLL_UUID"], expected: ""},
-    {name: "pollStop", functionCall: japi.Polls.Stop, arguments: [ "POLL_UUID"], expected: ""},
-    {name: "pollDelete", functionCall: japi.Polls.Delete, arguments: [ "POLL ID"], expected: ""},
-    {name: "templateSave", functionCall: japi.Polls.MyTemplates.Save, arguments: [ "TEMPLATE_UUID", "TEMPLATE XML"], expected: ""},
-    {name: "templateGet", functionCall: japi.Polls.MyTemplates.Get, arguments: ["TEMPLATE_UUID"], expected: ""},
-    {name: "templatesList", functionCall: japi.Polls.MyTemplates.List, arguments: [], expected: ""},
-    {name: "templatesDelete", functionCall: japi.Polls.MyTemplates.Delete, arguments: [ "TEMPLATE_UUID"], expected: ""} 
+    {name: "peerPing", functionCall: japi.peer.ping, arguments: [ ], expected: false},
+    {name: "peerListing", functionCall: japi.peerList.list, arguments: [ ], expected: ""},
+    {name: "savePeerListing", functionCall: japi.peerList.save, arguments: [ "PeerList UUID", "XML"], expected: ""},
+    {name: "getPeerList", functionCall: japi.peerList.get, arguments: [ "PeerList ID"], expected: ""},
+    {name: "deletePeerList", functionCall: japi.peerList.delete, arguments: [ "PeerList ID"], expected: ""},
+    {name: "pollResults", functionCall: japi.peer.polls.results, arguments: [ "JID/Cambrian ID", "POLL ID"], expected: ""},
+    {name: "pollSave", functionCall: japi.polls.save, arguments: [ "POLL_UUID", "POLL XML"], expected: ""},
+    {name: "pollsList", functionCall: japi.polls.list, arguments: [], expected: ""},
+    {name: "pollGet", functionCall: japi.polls.get, arguments: [ "POLL_UUID"], expected: ""},
+    {name: "pollStart", functionCall: japi.polls.start, arguments: [ "POLL_UUID"], expected: ""},
+    {name: "pollResults", functionCall: japi.polls.results, arguments: [ "POLL_UUID"], expected: ""},
+    {name: "pollStop", functionCall: japi.polls.stop, arguments: [ "POLL_UUID"], expected: ""},
+    {name: "pollDelete", functionCall: japi.polls.delete, arguments: [ "POLL ID"], expected: ""},
+    {name: "templateSave", functionCall: japi.polls.myTemplates.save, arguments: [ "TEMPLATE_UUID", "TEMPLATE XML"], expected: ""},
+    {name: "templateGet", functionCall: japi.polls.myTemplates.get, arguments: ["TEMPLATE_UUID"], expected: ""},
+    {name: "templatesList", functionCall: japi.polls.myTemplates.list, arguments: [], expected: ""},
+    {name: "templatesDelete", functionCall: japi.polls.myTemplates.delete, arguments: [ "TEMPLATE_UUID"], expected: ""} 
   ];
   //runTests($scope, $q);
       
   $scope.runTests = function(){
+    $scope.testsDisabled = true;
 
     console.log("Starting tests");
 

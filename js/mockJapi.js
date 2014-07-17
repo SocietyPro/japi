@@ -5,67 +5,67 @@ var Japi = function(){
   // TypeError: Cannot set property 'bar' of undefined
 
   var ret = {
-    Peer: {
-      Ping: {},
-      Recommendations: {},
-      Polls: {},
+    peer: {
+      ping: {},
+      recommendations: {},
+      polls: {},
     },
-    PeerList: {},
-    Polls: {
-      MyTemplates: {},
+    peerList: {},
+    polls: {
+      myTemplates: {},
     },
   }
-  ret.Peer.Ping = function(callback){
+  ret.peer.ping = function(callback){
     setTimeout(function(){ callback(null, false) }, 200);
   }
 
-  ret.PeerList.List = function(callback){
+  ret.peerList.list = function(callback){
     setTimeout(function(){ callback(null, false) }, 200);
   };
 
-  ret.PeerList.Save = function(UUID, XML, callback){
+  ret.peerList.save = function(UUID, XML, callback){
     setTimeout(function(){ callback(null, false) }, 200);
   };
-  ret.PeerList.Get = function(UUID, callback){
+  ret.peerList.get = function(UUID, callback){
     setTimeout(function(){ callback(null, false) }, 200);
   };
-  ret.PeerList.Delete = function(UUID, callback){
+  ret.peerList.delete = function(UUID, callback){
     setTimeout(function(){ callback(null, false) }, 200);
   };
-  ret.Peer.Polls.Results = function(CambrianID, UUID, callback){
+  ret.peer.polls.results = function(cambrianID, UUID, callback){
     setTimeout(function(){ callback(null, false) }, 200);
   };
-  ret.Polls.Save = function(UUID, XML, callback){
+  ret.polls.save = function(UUID, XML, callback){
     setTimeout(function(){ callback(null, false) }, 200);
   };
-  ret.Polls.List = function(callback){
+  ret.polls.list = function(callback){
     setTimeout(function(){ callback(null, false) }, 200);
   };
-  ret.Polls.Get = function(UUID, callback){
+  ret.polls.get = function(UUID, callback){
     setTimeout(function(){ callback(null, false) }, 200);
   };
-  ret.Polls.Start = function(UUID, callback){
+  ret.polls.start = function(UUID, callback){
     setTimeout(function(){ callback(null, false) }, 200);
   };
-  ret.Polls.Results = function(UUID, callback){
+  ret.polls.results = function(UUID, callback){
     setTimeout(function(){ callback(null, false) }, 200);
   };
-  ret.Polls.Stop = function(UUID, callback){
+  ret.polls.stop = function(UUID, callback){
     setTimeout(function(){ callback(null, false) }, 200);
   };
-  ret.Polls.Delete = function(UUID, callback){
+  ret.polls.delete = function(UUID, callback){
     setTimeout(function(){ callback(null, false) }, 200);
   };
-  ret.Polls.MyTemplates.Save = function(UUID, XML, callback){
+  ret.polls.myTemplates.save = function(UUID, XML, callback){
     setTimeout(function(){ callback(null, false) }, 200);
   };
-  ret.Polls.MyTemplates.Get = function(UUID, callback){
+  ret.polls.myTemplates.get = function(UUID, callback){
     setTimeout(function(){ callback(null, false) }, 200);
   };
-  ret.Polls.MyTemplates.List = function(callback){
+  ret.polls.myTemplates.list = function(callback){
     setTimeout(function(){ callback(null, false) }, 200);
   };
-  ret.Polls.MyTemplates.Delete = function(UUID, callback){
+  ret.polls.myTemplates.delete = function(UUID, callback){
     setTimeout(function(){ callback(null, false) }, 200);
   };
 
