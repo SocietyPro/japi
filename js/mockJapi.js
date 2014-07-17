@@ -24,7 +24,8 @@ var Japi = function(){
   };
 
   ret.peerList.save = function(UUID, XML, callback){
-    setTimeout(function(){ callback(null, false) }, 200);
+//    setTimeout(function(){ callback(null, false) }, 200);
+    japi.explodeDueToBadCall();
   };
   ret.peerList.get = function(UUID, callback){
     setTimeout(function(){ callback(null, false) }, 200);

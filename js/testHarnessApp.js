@@ -151,6 +151,7 @@ var testHarness = angular.module("testHarnessApp", [])
 
       function onTestError(reason) {
         test.succeeded = false;
+        test.error = reason;
         console.log('Fail -',test.name);
         console.log('     Error:', reason)
       };
@@ -171,11 +172,17 @@ var testHarness = angular.module("testHarnessApp", [])
       // Append the test callback to the test arguments:
       test.arguments.push(testCb)
       
-      // Run the test:
-      testFn.apply(this, test.arguments)
-      
-      // At some future point, the test will call its callback argument,
-      // which in turn calls deferred.resolve or deferred.reject.
+      try {
+        // Run the test:
+        testFn.apply(this, test.arguments)
+        
+        // At some future point, the test will call its callback argument,
+        // which in turn calls deferred.resolve or deferred.reject.
+      } catch(e) {
+        // Manually pass the caught exception to the callback:
+        testCb(e);
+      } finally {
+      };
     });
   };
 })
