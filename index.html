@@ -12,17 +12,19 @@
     <div class="container">
       <div ng-repeat="(key, test) in tests">
         <div id="testContainer" ng-class="{pass: test.succeeded === true, fail: test.succeeded === false, pending: test.succeeded === undefined}">
-          <div id="textStuff">
-            <strong>{{test.name}}</strong><br />
-            Call: {{test.functionCall}} Arguments: {{test.arguments}}<br />
-            Actual Return: {{test.actual}}<br />
-            Expected Return: {{test.expected}}
-          </div>
           <div id="prettyPicture">
             <img ng-show="test.succeeded == true" src="images/green-check-mark.png">
             <img ng-show="test.succeeded == false" src="images/red-fail.png">
           </div>
+          <div id="textStuff">
+            <strong>{{test.name}}</strong><br />
+            <em>{{test.comment}}</em><br />
+            Call: {{test.functionCall}} Arguments: {{test.arguments}}<br />
+            Expected Return: {{test.expected}}<br />
+            Actual Return: {{test.error === undefined ? test.actual : "ERROR"}}<br />
+          </div>
           <div class="clearBoth"></div>
+          <span class="error" ng-show="test.error">{{test.error.stack}}</span>
         </div>
       </div>
     </div>

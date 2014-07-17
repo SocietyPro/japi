@@ -10,6 +10,10 @@
 	border: 2px solid grey;
 }
 
+.error {
+	color: red;
+	font-family: Inconsolata, monospace;
+}
 #testContainer {
 	width: 600px;
 	padding: 8px;

@@ -7,7 +7,7 @@ var testHarness = angular.module("testHarnessApp", [])
   $scope.tests = [
     {
       name: "peerPing",
-      comment: "",
+      comment: "This pings a peer. Expected return is the latency between Cambrian users.",
       functionCall: japi.peer.ping,
       arguments: [ ],
       expected: false
@@ -153,7 +153,7 @@ var testHarness = angular.module("testHarnessApp", [])
         test.succeeded = false;
         test.error = reason;
         console.log('Fail -',test.name);
-        console.log('     Error:', reason)
+        console.log(reason);
       };
       
       // Alias the function to be tested as testFn:
