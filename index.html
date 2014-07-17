@@ -11,8 +11,8 @@
     <button onClick="window.location.reload()">Refresh Page</button>
     <div class="container">
       <div ng-repeat="(key, test) in tests">
-        <div id="testContainer" ng-class="{pass: test.succeeded === true, fail: test.succeeded === false, pending: test.succeeded === undefined}">
-          <div id="prettyPicture">
+        <div class="testContainer" ng-class="{pass: test.succeeded === true, fail: test.succeeded === false, pending: test.succeeded === undefined}">
+          <div class="prettyPicture">
             <img ng-show="test.succeeded == true" src="images/green-check-mark.png">
             <img ng-show="test.succeeded == false" src="images/red-fail.png">
           </div>
