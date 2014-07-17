@@ -1,8 +1,11 @@
-<div>
-  <span class="testName">{{$index}}</span>
-  <span class="testFn">{{test}}</span>
-  <span class="testArgs">{{test[]}}</span>
-  <span class="testExpected">{{test[]}}</span>
-  <span class="testActual">{{test[]}}</span>
-  <span class="testResult">{{test[]}}</span>
+<div id="testContainer">
+	<h3>{{key}}</h3>
+	<div id="textStuff">
+		Call: {{test.functionCall}} Arguments: {{test.arguments}}<br />
+		Actual: {{test.actual}}<br />
+		Expected: {{test.expected}}
+	</div>
+	<div id="prettyPicture">
+		<img src="">
+	</div>
 </div>

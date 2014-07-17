@@ -25,11 +25,13 @@ var testHarness = angular.module("testHarnessApp", [])
   //runTests($scope, $q);
       
   $scope.runTests = function(){
+
     console.log("Starting tests");
 
     angular.forEach($scope.tests, function (test) {
       var deferred = $q.defer();
       var promise = deferred.promise;
+
       promise.then(onTestComplete, onTestError);
 
       function onTestComplete (data) {
@@ -53,6 +55,7 @@ var testHarness = angular.module("testHarnessApp", [])
       var testFn = test.functionCall;
      
       // Make a callback fn that will eventually resolve this one deferred, for this one test:
+
       var testCb = (function(deferred){
         return function(err, resultData){
           //console.log("Test callback", err, resultData)

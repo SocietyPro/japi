@@ -4,23 +4,25 @@
     <script src="js/angular.js" type="text/javascript"></script>
     <script src="js/mockJapi.js" type="text/javascript"></script>
     <script src="js/testHarnessApp.js" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="stylesheet.css">
   </head>
   <body ng-controller="testCtrl">
     <button ng-click="runTests()">Run Tests</button>
     <div class="container">
       <div ng-repeat="(key, test) in tests">
-        <!--
-        <ng-include src="'partials/oneTestResult.html'" />
-        -->
-        <span class="testName">{{key}}</span>
-        <!--
-        <ng-include src="'partials/oneTestResult.html'" />
-        <span class="testFn">{{test.functionCall.toString()}}</span>
-        -->
-        <span class="testArgs">{{test.arguments}}</span>
-        <span class="testExpected">{{test.expected}}</span>
-        <span class="testActual">{{test.actual}}</span>
-        <span class="testResult">{{test.result}}</span>
+        <div id="testContainer" ng-class="{pass: test.succeeded === true, fail: test.succeeded === false, pending: test.succeeded === undefined}">
+          <div id="textStuff">
+            <h3>{{test.name}}</h3>
+            Call: {{test.functionCall}} Arguments: {{test.arguments}}<br />
+            Actual: {{test.actual}}<br />
+            Expected: {{test.expected}}
+          </div>
+          <div id="prettyPicture">
+            <img ng-show="test.succeeded == true" src="images/green-check-mark.png">
+            <img ng-show="test.succeeded == false" src="images/red-fail.png">
+          </div>
+          <div class="clearBoth"></div>
+        </div>
       </div>
     </div>
   </body>
