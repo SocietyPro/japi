@@ -1,4 +1,5 @@
-var Japi = function(){
+var Cambrian = Cambrian || {}
+Cambrian.JAPI = function(){
   // Define some children objects, this is necessary because trying to set
   // more than one deep of an undefined object fails.
   // {}.foo=true works but {}.foo.bar=true doesn't: 
