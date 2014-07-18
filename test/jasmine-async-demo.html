@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html ng-app="testHarnessApp">
+  <head>
+
+    <script type="text/javascript" src="../js/jasmine/lib/jasmine-2.0.0/jasmine.js"></script>
+    <script type="text/javascript" src="../js/jasmine/lib/jasmine-2.0.0/jasmine-html.js"></script>
+    <script type="text/javascript" src="../js/jasmine/lib/jasmine-2.0.0/boot.js"></script>
+
+    <script src="../js/angular.js" type="text/javascript"></script>
+    <script src="jasmine-async-demo.js" type="text/javascript"></script>
+
+    <link rel="stylesheet" type="text/css" href="../stylesheet.css">
+    <link rel="stylesheet" type="text/css" href="../js/jasmine/lib/jasmine-2.0.0/jasmine.css"> 
+  </head>
+  <body ng-controller="testCtrl">
+    <nav>
+      <button ng-click="runTests()" ng-disabled="testsDisabled">Run Tests</button>
+      <button onClick="window.location.reload()">Refresh Page</button>
+    </nav>
+    <div class="container">
+    </div>
+  </body>
+</html>
