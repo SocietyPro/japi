@@ -50,16 +50,16 @@ var testHarness = angular.module("testHarnessApp", [])
     {
       name: "pollSave",
       comment: "",
-      functionCall: japi.polls.save,
-      arguments: [ "POLL_UUID", "POLL XML"],
+      functionCall: japi.Polls.save,
+      arguments: ["<E><BAL i='3U;YQ~N' t='hi bob' d='foobar'><C><C t='no'/><C t='yes'/></C>><V></V></BAL>\n</E>"],
       expected: ""
     },
     {
       name: "pollsList",
       comment: "",
-      functionCall: japi.polls.list,
+      functionCall: japi.Polls.list,
       arguments: [],
-      expected: ""
+      expected: "<E><BAL i='3U;YQ~N' t='hi bob' d='foobar'><C><C t='no'/><C t='yes'/></C>><V></V></BAL>\n</E>",
     },
     {
       name: "pollGet",
