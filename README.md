@@ -13,7 +13,7 @@ mocks are found in
 To run the tests against the mock japi API:  
 clone the repo, then load `mock.html` in your favorite browser.
 
-To run the tests in Cambrian against the real JAPI:
+To run the tests in Cambrian against the real JAPI:  
 Navigate to `~/.Cambrian/App/Ballotmaster`  
 Delete everything in `~/.Cambrian/App/Ballotmaster`  
 Clone the repo  
