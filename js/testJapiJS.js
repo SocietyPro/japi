@@ -294,32 +294,44 @@ describe("japi.js", function(){
       });
     });
 
-    describe("poll.delete()", function(){
+    describe("poll.destroy()", function(){
       it("exists", function(){
-        expect(testPoll.delete).toBeDefined();
-        expect(typeof testPoll.delete).toEqual("function"); // or .not.tobedefined();
+        expect(testPoll.destroy).toBeDefined();
+        expect(typeof testPoll.destroy).toEqual("function"); // or .not.tobedefined();
       });
 
       it("returns true", function(){
-        var result = testPoll.delete();
+        var result = testPoll.destroy();
         expect(result).toBe(true);
       });
 
-      var myPolls;
-      it("is no longer found in japi.polls.getList()", function(){
-        myPolls = japi.polls.getList();
-        expect(typeof myPolls).toEqual("object");
-        expect(typeof myPolls.length).toEqual("number");
+      describe("a destroyed poll", function(){
+        var myPolls;
+        it("is no longer found in japi.polls.getList()", function(){
+          myPolls = japi.polls.getList();
+          expect(typeof myPolls).toEqual("object");
+          expect(typeof myPolls.length).toEqual("number");
 
-        var found = false;
-        for(var i=0; i<myPolls.length; i++){
-          if(myPolls[i].id === testPoll.id){
-            found = true;
+          var found = false;
+          for(var i=0; i<myPolls.length; i++){
+            if(myPolls[i].id === testPoll.id){
+              found = true;
+            };
           };
-        };
-        expect(found).toBe(false);
- 
+          expect(found).toBe(false);
+   
+        });
+
+        it("has a status of 'destroyed' on existing reflected objects", function(){
+          expect(testPoll.status).toEqual("destroyed");
+        });
+
+        it("has a status of 'destroyed' on japi.poll.get(destroyed_id)", function(){
+          myPoll = japi.polls.get(testPoll.id);
+          expect(myPoll.status).toEqual("destroyed");
+        });
       });
+
     });
 
   });
