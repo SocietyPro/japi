@@ -27,39 +27,10 @@ describe("japi.js", function(){
   });
 });
 
-describe("japi.peer", function(){
-  it("exists", function(){
-    expect(japi.peer).not.toEqual({});
-    expect(japi.peer).not.toEqual(undefined); // or .not.toBeDefined();
-  });
-
-  describe(".ping()", function(){
-    // Once implemented, ping will be called asynchronously
-    it("exists", function(){
-      expect(japi.peer.ping).not.toEqual({});
-      expect(japi.peer.ping).not.toEqual(undefined); // or .not.toBeDefined();
-    });
-
-    it("returns a Number", function(){
-      var time;
-      function callback(err, timeMS){
-        // time = timeMS
-        // expect(typeof time).toEqual("number")
-        // expect(time > 0).toBeTruthy()
-        // done()
-      }
-      time = japi.peer.ping(callback);
-      expect(typeof time).toEqual("number")
-      expect(time > 0).toBeTruthy()
-    });
-  });
-
-});
-
 
 describe("japi.utils", function(){
   it("exists", function(){
-    expect(japi.utils).not.toEqual({});
+    //expect(japi.utils).not.toEqual({});
     expect(japi.utils).not.toEqual(undefined); // or .not.toBeDefined();
   });
   it("is aliased as util", function(){
@@ -67,19 +38,6 @@ describe("japi.utils", function(){
     var util = japi.util;
     expect(utils).toBe(util);
   });
-  
-  describe(".getUUID()", function(){
-    it("exists", function(){
-      expect(japi.utils.getUUID).not.toEqual({});
-      expect(japi.utils.getUUID).not.toEqual(undefined); // or .not.toBeDefined();
-    });
-    it("returns a UUID", function(){
-      var uuid = japi.utils.getUUID();
-      expect(typeof uuid).toEqual("string");
-    });
-
-  });
-
 });
 
 describe("japi.polls", function(){
@@ -132,46 +90,46 @@ describe("japi.polls", function(){
       });
     });
 
-    describe("polls.getList()", function(){
-      it("exists", function(){
-        expect(japi.polls.getList).not.toEqual({});
-        expect(japi.polls.getList).not.toEqual(undefined); // or .not.tobedefined();
-      });
+  });
 
-      it("returns an array of poll objects", function(){
-        var myPolls = japi.polls.getList();
-        expect(typeof myPolls).toEqual("object");
-        expect(typeof myPolls.length).toEqual("number");
-        expect(myPolls[0].id).not.toEqual(myPolls[1].id);
-      });
+  describe("polls.getList()", function(){
+    it("exists", function(){
+      expect(japi.polls.getList).not.toEqual({});
+      expect(japi.polls.getList).not.toEqual(undefined); // or .not.tobedefined();
     });
 
-    describe("polls.get(id)", function(){
-      it("exists", function(){
-        expect(japi.polls.get).not.toEqual({});
-        expect(japi.polls.get).not.toEqual(undefined); // or .not.tobedefined();
-      });
+    it("returns an array of poll objects", function(){
+      var myPolls = japi.polls.getList();
+      expect(typeof myPolls).toEqual("object");
+      expect(typeof myPolls.length).toEqual("number");
+      expect(myPolls[0].id).not.toEqual(myPolls[1].id);
+    });
+  });
 
-      it("returns a found poll object by ID", function(){
-        var newPoll = japi.poll.build();
-        var id1 = newPoll.id;
-        newPoll.title = "Test Poll";
-        newPoll.save();
-        var id2 = newPoll.id;
-        expect(id1).toEqual(id2);
-
-        var foundPoll = japi.polls.get(id1);
-        expect(typeof foundPoll).toEqual("object");
-        expect(foundPoll.title).toEqual("Test Poll");
-        expect(foundPoll.id).toEqual(id1);
-      });
-
-      it("returns false if no poll object is found", function(){
-        var myPoll = japi.polls.get("UUID100");
-        expect(myPoll).toBe(false);
-      });
+  describe("polls.get(id)", function(){
+    it("exists", function(){
+      expect(japi.polls.get).not.toEqual({});
+      expect(japi.polls.get).not.toEqual(undefined); // or .not.tobedefined();
     });
 
+    it("returns a found poll object by ID", function(){
+      var newPoll = japi.poll.build();
+      var id1 = newPoll.id;
+      newPoll.title = "Test Poll";
+      newPoll.save();
+      var id2 = newPoll.id;
+      expect(id1).toEqual(id2);
+
+      var foundPoll = japi.polls.get(id1);
+      expect(typeof foundPoll).toEqual("object");
+      expect(foundPoll.title).toEqual("Test Poll");
+      expect(foundPoll.id).toEqual(id1);
+    });
+
+    it("returns false if no poll object is found", function(){
+      var myPoll = japi.polls.get("UUID100");
+      expect(myPoll).toBe(false);
+    });
   });
 
 });
