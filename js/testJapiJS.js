@@ -1,35 +1,25 @@
 console.log('testHarnessApp.js');
-/*
-describe("jasmine asynchronous spec", function() {
-  it("takes a long time", function(done) {
-    setTimeout(function() {
-      expect(true).toBeTruthy();
-      done();
-    }, 2000);
-  });
-});
-*/
 
 var japi;
 japi = new Cambrian.JAPI();
 
-describe("mockJapi.js", function(){
+describe("japi.js", function(){
 
   it("Synchronously instantiates JAPI", function(){
     // Moved instantiation above top describe block, so it's available if you
     // run a sibling spec solo.
-    expect(japi.utils).not.toEqual({});
-    expect(japi.utils).not.toEqual(undefined); // or .not.toBeDefined();
+    expect(japi).not.toEqual({});
+    expect(japi).not.toEqual(undefined); // or .not.toBeDefined();
   });
 
-  it("throws  a top-level 'function is undefined' exception", function(){
+  it("japi.nonExistentCall() throws exception", function(){
     function shouldThrow(){
       return japi.nonExistentCall();
     };
     expect(shouldThrow).toThrow();
   });
 
-  it("throws a child-level 'function is undefined' exception", function(){
+  it("japi.nonExistentProperty.nonExistentCall() throws exception", function(){
     function shouldThrow(){
       return japi.nonExistentProperty.nonExistentCall();
     };
@@ -64,90 +54,8 @@ describe("japi.peer", function(){
     });
   });
 
-  describe(".poll.results()", function(){
-    // Not yet specc'ed, putting here as a reminder
-    var pollResultsSpec = undefined;
-    it("is not specced", function(){
-      expect(pollResultsSpec).not.toBeDefined();
-    });
-    it("is undefined", function(){
-      expect(japi.peer.poll).not.toBeDefined();
-    });
-    it("throws when called", function(){
-      function callPollChild(){
-        results = japi.peer.poll.results()
-      };
-      expect(callPollChild).toThrow()
-    });
-  });
 });
 
-describe("japi.role", function(){
-  it("exists", function(){
-    expect(japi.role).not.toEqual({});
-    expect(japi.role).not.toEqual(undefined); // or .not.toBeDefined();
-  });
-
-  describe(".peerList", function(){
-    it("exists", function(){
-      expect(japi.role.peerList).not.toEqual({});
-      expect(japi.role.peerList).not.toEqual(undefined); // or .not.toBeDefined();
-    });
-
-    describe(".list()", function(){
-      it("exists", function(){
-        expect(japi.role.peerList.list).not.toEqual({});
-        expect(japi.role.peerList.list).not.toEqual(undefined); // or .not.toBeDefined();
-      });
-
-      it("returns an Array", function(){
-        lists = japi.role.peerList.list();
-        expect(typeof lists).toEqual("object");
-        expect(typeof lists.length).toEqual("number");
-        expect(lists.pop).toBeDefined();
-      });
-    });
-
-    describe(".save()", function(){
-      it("exists", function(){
-        expect(japi.role.peerList.save).not.toEqual({});
-        expect(japi.role.peerList.save).not.toEqual(undefined); // or .not.toBeDefined();
-      });
-
-      it("returns true", function(){
-        result = japi.role.peerList.save("UUID4", ["hiro", "plato"]);
-        expect(result).toEqual(true);
-      });
-    });
-
-    describe(".get()", function(){
-      it("exists", function(){
-        expect(japi.role.peerList.get).not.toEqual({});
-        expect(japi.role.peerList.get).not.toEqual(undefined); // or .not.toBeDefined();
-      });
-
-      it("returns a peerList Array Object", function(){
-        peerList = japi.role.peerList.get("UUID2");
-        expect(typeof peerList).toEqual("object");
-        expect(typeof peerList.length).toEqual("number");
-        expect(peerList.pop).toBeDefined();
-      });
-    });
-
-    describe(".delete()", function(){
-      it("exists", function(){
-        expect(japi.role.peerList.delete).not.toEqual({});
-        expect(japi.role.peerList.delete).not.toEqual(undefined); // or .not.toBeDefined();
-      });
-
-      it("returns true", function(){
-        result = japi.role.peerList.delete("UUID3");
-        expect(result).toEqual(true);
-      });
-    });
-  });
-
-});
 
 describe("japi.utils", function(){
   it("exists", function(){
@@ -168,7 +76,6 @@ describe("japi.utils", function(){
     it("returns a UUID", function(){
       var uuid = japi.utils.getUUID();
       expect(typeof uuid).toEqual("string");
-      expect(uuid).toEqual("UUID1"); // mock testing only
     });
 
   });
@@ -176,6 +83,8 @@ describe("japi.utils", function(){
 });
 
 describe("japi.polls", function(){
+  var savedPoll; // we'll use this in a couple places
+
   it("exists", function(){
     expect(japi.polls).not.toEqual({});
     expect(japi.polls).not.toEqual(undefined); // or .not.toBeDefined();
@@ -188,10 +97,11 @@ describe("japi.polls", function(){
         expect(japi.polls.build).not.toEqual(undefined); // or .not.tobedefined();
       });
       it("returns a skeleton poll object", function(){
-        var mypoll = japi.polls.build();
-        expect(typeof mypoll).toEqual("object");
-        expect(mypoll.id).toEqual("UUID1");
-        expect(mypoll.status).toEqual("deleted");
+        var myPoll = japi.polls.build();
+        expect(typeof myPoll).toEqual("object");
+        expect(typeof myPoll.id).toEqual("string");
+        expect(typeof myPoll.title).toEqual("string");
+        expect(myPoll.status).toEqual("deleted");
       });
     });
 
@@ -243,10 +153,17 @@ describe("japi.polls", function(){
       });
 
       it("returns a found poll object by ID", function(){
-        var myPoll = japi.polls.get("UUID1");
-        expect(typeof myPoll).toEqual("object");
-        expect(typeof myPoll.title).toEqual("string");
-        expect(myPoll.id).toEqual("UUID1");
+        var newPoll = japi.poll.build();
+        var id1 = newPoll.id;
+        newPoll.title = "Test Poll";
+        newPoll.save();
+        var id2 = newPoll.id;
+        expect(id1).toEqual(id2);
+
+        var foundPoll = japi.polls.get(id1);
+        expect(typeof foundPoll).toEqual("object");
+        expect(foundPoll.title).toEqual("Test Poll");
+        expect(foundPoll.id).toEqual(id1);
       });
 
       it("returns false if no poll object is found", function(){
