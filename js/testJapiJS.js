@@ -94,7 +94,7 @@ describe("japi.js", function(){
   var testPoll; // we'll use this both in poll.save() and japi.polls.get();
   describe("poll", function(){
     it("instantiates", function(){
-      testPoll = japi.polls.new();
+      testPoll = japi.polls.build();
       expect(testPoll).toBeDefined();
     });
     it("has a string id", function(){
@@ -112,9 +112,16 @@ describe("japi.js", function(){
       });
     });
 
+    it('Has testPoll in scope', function(){
+      expect(testPoll).toBeDefined();
+    });
+
   });
 
   describe("japi.polls (Redux)", function(){
+    it('Still has testPoll in scope', function(){
+      expect(testPoll).toBeDefined();
+    });
     describe("polls.getList()", function(){
       it("exists", function(){
         expect(japi.polls.getList).not.toEqual({});
