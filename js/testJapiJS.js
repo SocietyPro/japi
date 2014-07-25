@@ -121,6 +121,8 @@ describe("japi.js", function(){
   describe("japi.polls (Redux)", function(){
     it('Still has testPoll in scope', function(){
       expect(testPoll).toBeDefined();
+      expect(testPoll.id).toBeDefined();
+      expect(typeof testPoll.id).toEqual("string");
     });
     describe("polls.getList()", function(){
       it("exists", function(){
@@ -132,12 +134,17 @@ describe("japi.js", function(){
         var myPolls = japi.polls.getList();
         expect(typeof myPolls).toEqual("object");
         expect(typeof myPolls.length).toEqual("number");
-        expect(myPolls).toContain(testPoll);
+        var found = false;
+        for(var i=0; i<myPolls.length; i++){
+          if(myPolls[i].id === testPoll.id){
+            found = true;
+          };
+        };
+        expect(found).toBe(true);
       });
     });
 
     describe("polls.get(id)", function(){
-      var idToSearch = testPoll.id;
 
       it("exists", function(){
         expect(japi.polls.get).not.toEqual({});
@@ -145,6 +152,7 @@ describe("japi.js", function(){
       });
 
       it("returns a found poll object by ID", function(){
+        var idToSearch = testPoll.id;
         var foundPoll = japi.polls.get(idToSearch);
         expect(typeof foundPoll).toEqual("object");
         expect(foundPoll.title).toEqual("Test Poll");
