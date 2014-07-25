@@ -46,7 +46,7 @@ describe("japi.js", function(){
       expect(japi.polls).not.toEqual(undefined); // or .not.toBeDefined();
     });
 
-    describe(".build constructor", function(){
+    describe(".build constructor variants", function(){
       describe(".build()", function(){
         it("exists", function(){
           expect(japi.polls.build).not.toEqual({});
@@ -92,8 +92,7 @@ describe("japi.js", function(){
     
     var testPoll; // we'll use this both in poll.save() and japi.polls.get();
 
-    describe("Create, save, load and destroy a poll", function(){
-
+    describe("Create a poll", function(){
       describe("testPoll = poll.build()", function(){
         it("returns an object", function(){
           testPoll = japi.polls.build();
@@ -106,7 +105,9 @@ describe("japi.js", function(){
           expect(typeof testPoll.save).toEqual("function");
         });
       });
+    });
 
+    describe("Save a poll", function(){
       describe("testPoll.save()", function(){
         it("saves a modified poll and returns true", function(){
           testPoll.title="Test Poll";
@@ -114,8 +115,9 @@ describe("japi.js", function(){
           expect(result).toEqual(true);
         });
       });
+    });
 
-
+    describe("Load a poll", function(){
       describe("japi.polls.get(testPoll.id)", function(){
         /*
         it('Still has testPoll in scope', function(){
@@ -137,13 +139,15 @@ describe("japi.js", function(){
           expect(foundPoll.id).toEqual(idToSearch);
         });
 
-        it("returns false if no poll object is found", function(){
+        it("returns null if no poll object is found", function(){
           var myPoll = japi.polls.get("UUID100");
-          expect(myPoll).toBe(false);
+          expect(myPoll).toBe(null);
         });
 
       });
+    });
 
+    describe("Load all polls", function(){
       describe("polls.getList()", function(){
         it("exists", function(){
           expect(japi.polls.getList).not.toEqual({});
@@ -167,7 +171,51 @@ describe("japi.js", function(){
           expect(found).toBe(true);
         });
       });
+    });
 
+    describe("Start a poll", function(){
+      describe("poll.start()", function(){
+        it("exists", function(){
+          expect(testPoll.start).toBeDefined();
+          expect(typeof testPoll.start).toEqual("function"); // or .not.tobedefined();
+        });
+
+        it("Sets the parent poll's .status field to 'started'", function(){
+          testPoll.start();
+          expect(testPoll.status).toEqual("started"); 
+        });
+
+        it("Sets the parent poll's .timeStarted field to now", function(){
+          var tStart = new Date(testPoll.timeStarted).valueOf();
+          var tNow = new Date().valueOf();
+          var msDiff = abs(tStart-tNow);
+          expect(msDiff < 1000*60).toEqual("true"); 
+          // Less than one minute between Cambrian marking the poll as started, and this script executing the test
+        });
+    });
+
+    describe("Stop a poll", function(){
+      describe("poll.stop()", function(){
+        it("exists", function(){
+          expect(testPoll.stop).toBeDefined();
+          expect(typeof testPoll.stop).toEqual("function"); // or .not.tobedefined();
+        });
+
+        it("Sets the parent poll's .status field to 'stopped'", function(){
+          testPoll.stop();
+          expect(testPoll.status).toEqual("stopped"); 
+        });
+        it("Sets the parent poll's .timeStopped field to now", function(){
+          var tStop = new Date(testPoll.timeStopped).valueOf();
+          var tNow = new Date().valueOf();
+          var msDiff = abs(tStop-tNow);
+          expect(msDiff < 1000*60).toEqual("true"); 
+          // Less than one minute between Cambrian marking the poll as stopped, and this script executing the test
+        });
+      });
+    });
+
+    describe("Destroy a poll", function(){
       describe("poll.delete()", function(){
         it("exists", function(){
           expect(testPoll.delete).toBeDefined();
@@ -195,9 +243,7 @@ describe("japi.js", function(){
    
         });
       });
-    
     });
-
   });
 
 
