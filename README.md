@@ -1,10 +1,8 @@
 html5-japi-tests
 ================
-
 This repo holds `japi.js` and its associated test suite.
 
 ## japi.js
-
 `japi.js` is a javascript API for Society<sup>PRO</sup> users. 
 
 Society<sup>PRO</sup> is written in C++, and natively provides some Javascript API calls that wrap C++ functions. These wrapped functions can be accessed in any Javascript global scope in an object called
@@ -47,20 +45,18 @@ Future work: asynchronous japi, asynchronous japi mocks, asynchronous japi tests
 These tests are written with the Jasmine library.
 
  * [japi.js library] (https://github.com/CambrianExp/html5-japi-tests/tree/master/js/japi.js)
-
  * [tests against japi.js](https://github.com/CambrianExp/html5-japi-tests/tree/master/js/testJapiJS.js)
-
  * [mockJapi.js mock object](https://github.com/CambrianExp/html5-japi-tests/tree/master/js/mockJapi.js)
-
  * [tests against mockJapi.js](https://github.com/CambrianExp/html5-japi-tests/tree/master/js/testMockJapi.js)
 
 ###To run the tests against the mock japi API:  
-clone the repo, then load `mock.html` in your favorite browser.
+Clone the repo `git clone git@github.com:SocietyPro/html5-japi-tests.git`  
+Load `mock.html` in your favorite browser `firefox html5-japi-tests/mock.html`  
 
 ###To run the tests in Cambrian against the real JAPI:  
 Navigate to `~/.Cambrian/App/Ballotmaster`  
 Delete everything in `~/.Cambrian/App/Ballotmaster`  
-Clone the repo  
+Clone the repo `git clone git@github.com:SocietyPro/html5-japi-tests.git`  
 Copy the repo into the Ballotmaster folder  
 Rename or copy `index.html` to `default.htm`  
 Start Cambrian  
