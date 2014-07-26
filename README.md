@@ -3,17 +3,20 @@ html5-japi-tests
 
 This repo holds `japi.js` and its associated test suite.
 
-`japi.js` is a javascript library for client scripts to make calls to the Society<sup>PRO</sup> Javascript API.
-
 ## japi.js
 
 `japi.js` is a javascript API for Society<sup>PRO</sup> users. 
 
-Society<sup>PRO</sup> natively provides some API calls from an object called
-`SO_PRO` that is found in every javascript global scope within Society<sup>PRO</sup>.
+Society<sup>PRO</sup> is written in C++, and natively provides some Javascript API calls that wrap C++ functions. These wrapped functions can be accessed in any Javascript global scope in an object called
+`SO_PRO`
 
-`japi.js` creates a Javascript function object `SO_PRO.JAPI`. When invoked `()` it
-returns a client-side module, documented at [http://group.cambrian.org/wiki/doku.php?id=japi.js](http://group.cambrian.org/wiki/doku.php?id=japi.js)
+`japi.js` provides a wrapper over these API calls, offering developers access to
+Society<sub>PRO</sub>'s capabilities using standard Javascript conventions.
+
+When loaded, `japi.js` creates a Javascript function object `SO_PRO.JAPI`. 
+When `SO_PRO.JAPI` is invoked `()` it returns a client-side module, documented
+on [the Society<sub>PRO</sub>
+wiki](http://group.cambrian.org/wiki/doku.php?id=japi.js).
 
 Expected use:
 
@@ -37,11 +40,11 @@ Future work: asynchronous japi, asynchronous japi mocks, asynchronous japi tests
 ## Tests against japi.js
 These tests are written with the Jasmine library.
 
- * [japi.js library] (https://github.com/CambrianExp/html5-japi-tests/tree/master/js/japi.js).
+ * [japi.js library] (https://github.com/CambrianExp/html5-japi-tests/tree/master/js/japi.js)
 
- * [tests against japi.js](https://github.com/CambrianExp/html5-japi-tests/tree/master/js/testJapiJS.js).
+ * [tests against japi.js](https://github.com/CambrianExp/html5-japi-tests/tree/master/js/testJapiJS.js)
 
- * [mockJapi.js mock object](https://github.com/CambrianExp/html5-japi-tests/tree/master/js/mockJapi.js).
+ * [mockJapi.js mock object](https://github.com/CambrianExp/html5-japi-tests/tree/master/js/mockJapi.js)
 
  * [tests against mockJapi.js](https://github.com/CambrianExp/html5-japi-tests/tree/master/js/testMockJapi.js)
 
