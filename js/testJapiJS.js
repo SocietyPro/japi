@@ -46,55 +46,13 @@ describe("japi.js", function(){
       expect(japi.polls).not.toEqual(undefined); // or .not.toBeDefined();
     });
 
-    describe(".build constructor variants", function(){
-      describe(".build()", function(){
-        it("exists", function(){
-          expect(japi.polls.build).not.toEqual({});
-          expect(japi.polls.build).not.toEqual(undefined); // or .not.tobedefined();
-        });
-        it("returns a skeleton poll object", function(){
-          var myPoll = japi.polls.build();
-          expect(typeof myPoll).toEqual("object");
-          expect(typeof myPoll.id).toEqual("string");
-          expect(typeof myPoll.title).toEqual("string");
-          expect(myPoll.status).toEqual("deleted");
-        });
-      });
+    var testPoll; 
+    var testPollResults;
+    // we'll use this throughout our tests
 
-      describe(".build(oldPoll)", function(){
-        var oldPoll;
-        var newPoll;
-
-        it("returns a newPoll object", function(){
-          oldPoll = japi.polls.build();
-          newPoll = japi.polls.build(oldPoll);
-          expect(typeof newPoll).toEqual("object");
-          expect(typeof newPoll.save).toEqual("function");
-        });
-        it("copies the appropriate properties from oldPoll to newPoll", function(){
-          expect(newPoll.title).toEqual(oldPoll.title);
-        });
-        it("sets some properties of newPoll to .build() defaults", function(){
-          expect(newPoll.id).not.toEqual(oldPoll.id);
-          expect(newPoll.dateStarted).toBeNull();
-          expect(newPoll.status).toEqual("deleted");
-        });
-      });
-
-      describe(".build(pollTemplate)", function(){
-        var pollTemplateSpec = undefined;
-        it("is not specced", function(){
-          expect(pollTemplateSpec).not.toBeDefined();
-        });
-      });
-
-    });
-    
-    var testPoll; // we'll use this throughout our tests
-
+    /*
     describe("testPoll = poll.build()", function(){
       it("returns an object", function(){
-        testPoll = japi.polls.build();
         expect(testPoll).toBeDefined();
       });
       it("has a string id", function(){
@@ -104,15 +62,225 @@ describe("japi.js", function(){
         expect(typeof testPoll.save).toEqual("function");
       });
     });
+    */
 
-    describe("testPoll.save()", function(){
-      it("saves a modified poll and returns true", function(){
-        testPoll.title="Test Poll";
-        var result = testPoll.save();
-        expect(result).toEqual(true);
+
+    describe(".build constructor variants", function(){
+      describe(".build()", function(){
+        it("exists", function(){
+          expect(japi.polls.build).not.toEqual({});
+          expect(japi.polls.build).not.toEqual(undefined); // or .not.tobedefined();
+        });
+        it("returns a skeleton poll object", function(){
+          testPoll = japi.polls.build();
+          //var myPoll = japi.polls.build();
+          expect(typeof testPoll).toEqual("object");
+        });
+        describe("skeleton poll object", function(){
+          it("has a string 'id'", function(){
+            expect(typeof testPoll.id).toEqual("string");
+          });
+
+          it("has an empty string 'type'", function(){
+            expect(typeof testPoll.type).toEqual("string");
+            expect(testPoll.type).toEqual("");
+          });
+
+          it("has an empty string 'title'", function(){
+            expect(typeof testPoll.title).toEqual("string");
+            expect(testPoll.title).toEqual("");
+          });
+
+          it("has an empty string 'description'", function(){
+            expect(typeof testPoll.description).toEqual("string");
+            expect(testPoll.description).toEqual("");
+          });
+
+          it("has a string 'status' == 'unsaved'", function(){
+            expect(typeof testPoll.status).toEqual("string");
+            expect(testPoll.status).toEqual("unsaved");
+          });
+
+          it("has a null 'dateStarted'", function(){
+            expect(testPoll.dateStarted).toEqual("null");
+          });
+
+          it("has a null 'dateStopped'", function(){
+            expect(testPoll.dateStopped).toEqual("null");
+          });
+
+          it("has a falsy 'pollTimeLength'", function(){
+            expect(testPoll.pollTimeLength).toBeFalsy(); // 0 or null acceptable defaults for no-time-limit
+          });
+
+          describe("methods", function(){
+            describe(".save()", function(){
+              it("saves a modified poll and returns true", function(){
+                testPoll.title="Test Poll";
+                var result = testPoll.save();
+                expect(result).toEqual(true);
+              });
+            });
+
+            describe(".start()", function(){
+              it("exists", function(){
+                expect(testPoll.start).toBeDefined();
+                expect(typeof testPoll.start).toEqual("function"); // or .not.tobedefined();
+              });
+
+              it("Sets the parent poll's .status field to 'started'", function(){
+                testPoll.start();
+                expect(testPoll.status).toEqual("started"); 
+              });
+
+              it("Sets the parent poll's .timeStarted field to now", function(){
+                var tStart = new Date(testPoll.timeStarted).valueOf();
+                var tNow = new Date().valueOf();
+                var msDiff = Math.abs(tStart-tNow);
+                expect(msDiff < 1000*60).toEqual("true"); 
+                // Less than one minute between Cambrian marking the poll as started, and this script executing the test
+              });
+            });
+
+            describe(".stop()", function(){
+              it("exists", function(){
+                expect(testPoll.stop).toBeDefined();
+                expect(typeof testPoll.stop).toEqual("function"); // or .not.tobedefined();
+              });
+
+              it("Sets the parent poll's .status field to 'stopped'", function(){
+                testPoll.stop();
+                expect(testPoll.status).toEqual("stopped"); 
+              });
+
+              it("Sets the parent poll's .timeStopped field to now", function(){
+                var tStop = new Date(testPoll.timeStopped).valueOf();
+                var tNow = new Date().valueOf();
+                var msDiff = Math.abs(tStop-tNow);
+                expect(msDiff < 1000*60).toEqual("true"); 
+                // Less than one minute between Cambrian marking the poll as stopped, and this script executing the test
+              });
+            });
+
+            describe(".getResults", function(){
+              it("exists", function(){
+                expect(testPoll.getResults).toBeDefined();
+                expect(typeof testPoll.getResults).toEqual("function"); // or .not.tobedefined();
+              });
+
+              it("returns a pollResults object", function(){
+                testPollResults = testPoll.getResults();
+                expect(testPollResults).toBeDefined();
+              });
+
+            });
+
+            describe(".destroy()", function(){
+              it("exists", function(){
+                expect(testPoll.destroy).toBeDefined();
+                expect(typeof testPoll.destroy).toEqual("function"); // or .not.tobedefined();
+              });
+
+              it("returns true", function(){
+                var result = testPoll.destroy();
+                expect(result).toBe(true);
+              });
+
+              describe("a destroyed poll", function(){
+                var myPolls;
+                it("is no longer found in japi.polls.getList()", function(){
+                  myPolls = japi.polls.getList();
+                  expect(typeof myPolls).toEqual("object");
+                  expect(typeof myPolls.length).toEqual("number");
+
+                  var found = false;
+                  for(var i=0; i<myPolls.length; i++){
+                    if(myPolls[i].id === testPoll.id){
+                      found = true;
+                    };
+                  };
+                  expect(found).toBe(false);
+           
+                });
+
+                it("has a status of 'destroyed' on existing reflected objects", function(){
+                  expect(testPoll.status).toEqual("destroyed");
+                });
+
+                it("has a status of 'destroyed' on japi.poll.get(destroyed_id)", function(){
+                  myPoll = japi.polls.get(testPoll.id);
+                  expect(myPoll.status).toEqual("destroyed");
+                });
+              });
+
+            });
+          });
+
+        });
       });
-    });
 
+      it("sets up a new testPoll after testPoll.destroy()", function(){
+        testPoll = japi.polls.build();
+      });
+
+      describe(".build(testPoll)", function(){
+
+        it("returns a copyPoll object", function(){
+          //testPoll = japi.polls.build();
+          copyPoll = japi.polls.build(testPoll);
+          expect(typeof copyPoll).toEqual("object");
+          expect(typeof copyPoll.save).toEqual("function");
+        });
+        describe('Copied properties', function(){
+
+          it("copies the type", function(){
+            expect(copyPoll.type).toEqual(testPoll.type);
+          });
+
+          it("copies the title", function(){
+            expect(copyPoll.title).toEqual(testPoll.title);
+          });
+
+          it("copies the description", function(){
+            expect(copyPoll.description).toEqual(testPoll.description);
+          });
+
+          it("copies the pollTimeLength", function(){
+            expect(copyPoll.pollTimeLength).toEqual(testPoll.pollTimeLength);
+          });
+
+        });
+
+        describe('Default properties', function(){
+
+          it("sets a new string id", function(){
+            expect(typeof copyPoll.id).toEqual("string");
+            expect(copyPoll.id).not.toEqual(testPoll.id);
+          });
+
+          it("sets dateStarted to null", function(){
+            expect(copyPoll.dateStarted).toBeNull();
+          });
+
+          it("sets dateStopped to null", function(){
+            expect(copyPoll.dateStopped).toBeNull();
+          });
+
+          it("sets status to 'unsaved'", function(){
+            expect(copyPoll.status).toEqual('unsaved');
+          });
+
+        });
+      });
+
+      describe(".build(pollTemplate)", function(){
+        it("is specced", function(){
+          expect(pollTemplateSpec).toBeDefined();
+        });
+      });
+
+    });
+    
     describe("japi.polls.get(testPoll.id)", function(){
       /*
       it('Still has testPoll in scope', function(){
@@ -130,7 +298,6 @@ describe("japi.js", function(){
         var idToSearch = testPoll.id;
         var foundPoll = japi.polls.get(idToSearch);
         expect(typeof foundPoll).toEqual("object");
-        expect(foundPoll.title).toEqual("Test Poll");
         expect(foundPoll.id).toEqual(idToSearch);
       });
 
@@ -165,174 +332,83 @@ describe("japi.js", function(){
       });
     });
 
-    describe("poll.start()", function(){
-      it("exists", function(){
-        expect(testPoll.start).toBeDefined();
-        expect(typeof testPoll.start).toEqual("function"); // or .not.tobedefined();
+
+    describe("pollResults", function(){
+
+      it("reflects changes from its parent poll object", function(){
+        testPoll.description = "reflect me";
+        testPoll.save();
+        expect(testPollResults.description).toEqual("reflect me");
       });
 
-      it("Sets the parent poll's .status field to 'started'", function(){
-        testPoll.start();
-        expect(testPoll.status).toEqual("started"); 
+      it("has an array of 'comments'", function(){
+        expect(typeof testPollResults.comments).toEqual("object"); 
+        expect(typeof testPollResults.comments.length).toEqual("number"); 
       });
 
-      it("Sets the parent poll's .timeStarted field to now", function(){
-        var tStart = new Date(testPoll.timeStarted).valueOf();
-        var tNow = new Date().valueOf();
-        var msDiff = Math.abs(tStart-tNow);
-        expect(msDiff < 1000*60).toEqual("true"); 
-        // Less than one minute between Cambrian marking the poll as started, and this script executing the test
-      });
-    });
-
-    describe("poll.stop()", function(){
-      it("exists", function(){
-        expect(testPoll.stop).toBeDefined();
-        expect(typeof testPoll.stop).toEqual("function"); // or .not.tobedefined();
+      it("has an array of 'counts'", function(){
+        expect(typeof testPollResults.counts).toEqual("object"); 
+        expect(typeof testPollResults.counts.length).toEqual("number"); 
       });
 
-      it("Sets the parent poll's .status field to 'stopped'", function(){
-        testPoll.stop();
-        expect(testPoll.status).toEqual("stopped"); 
-      });
-
-      it("Sets the parent poll's .timeStopped field to now", function(){
-        var tStop = new Date(testPoll.timeStopped).valueOf();
-        var tNow = new Date().valueOf();
-        var msDiff = Math.abs(tStop-tNow);
-        expect(msDiff < 1000*60).toEqual("true"); 
-        // Less than one minute between Cambrian marking the poll as stopped, and this script executing the test
-      });
-    });
-
-    describe("poll.getResults", function(){
-      it("exists", function(){
-        expect(testPoll.getResults).toBeDefined();
-        expect(typeof testPoll.getResults).toEqual("function"); // or .not.tobedefined();
-      });
-
-      var results;
-      it("returns a pollResults object", function(){
-        results = testPoll.getResults();
-        expect(results).toBeDefined();
-      });
-
-      describe("pollResults", function(){
-
-        it("reflects changes from its parent poll object", function(){
-          testPoll.description = "reflect me";
-          testPoll.save();
-          expect(results.description).toEqual("reflect me");
+      describe("inherited properties", function(){
+        it("matches the 'id' of the source poll", function(){
+          expect(testPollResults.id).toEqual(testPoll.id)
         });
 
-        it("has an array of comments", function(){
-          expect(typeof results.comments).toEqual("object"); 
-          expect(typeof results.comments.length).toEqual("number"); 
+        it("matches the 'title' of the source poll", function(){
+          expect(testPollResults.title).toEqual(testPoll.title)
         });
 
-        it("has an array of counts", function(){
-          expect(typeof results.counts).toEqual("object"); 
-          expect(typeof results.counts.length).toEqual("number"); 
+        it("matches the 'description' of the source poll", function(){
+          expect(testPollResults.description).toEqual(testPoll.description)
         });
 
-        describe("inherited properties", function(){
-          it("matches the ID of the source poll", function(){
-            expect(results.id).toEqual(testPoll.id)
-          });
-
-          it("matches the title of the source poll", function(){
-            expect(results.title).toEqual(testPoll.title)
-          });
-
-          it("matches the description of the source poll", function(){
-            expect(results.description).toEqual(testPoll.description)
-          });
-
-          it("matches the status of the source poll", function(){
-            expect(results.status).toEqual(testPoll.status)
-          });
-
-          it("matches the dateStarted of the source poll", function(){
-            expect(results.dateStarted).toEqual(testPoll.dateStarted)
-          });
-
-          it("matches the dateStopped of the source poll", function(){
-            expect(results.dateStopped).toEqual(testPoll.dateStopped)
-          });
-
-          it("matches the options of the source poll", function(){
-            expect(results.options).toEqual(testPoll.options)
-          });
-
-          it("matches the title of the source poll", function(){
-            expect(results.title).toEqual(testPoll.title)
-          });
+        it("matches the 'status' of the source poll", function(){
+          expect(testPollResults.status).toEqual(testPoll.status)
         });
 
-        describe("pollResults.stats", function(){
-          it("is an object", function(){
-            expect(typeof results.stats).toEqual("object"); 
-          });
-          it("has an integer .sent property", function(){
-            expect(typeof results.stats.sent).toEqual("number"); 
-            expect(results.stats.sent % 1).toEqual(0); 
-          });
-          it("has an integer .responded property", function(){
-            expect(typeof results.stats.responded).toEqual("number"); 
-            expect(results.stats.responded % 1).toEqual(0); 
-          });
-          it("has an integer .pending property", function(){
-            expect(typeof results.stats.pending).toEqual("number"); 
-            expect(results.stats.pending % 1).toEqual(0); 
-          });
-          it("has an integer .invalid property", function(){
-            expect(typeof results.stats.invalid).toEqual("number"); 
-            expect(results.stats.invalid % 1).toEqual(0); 
-          });
+        it("matches the 'dateStarted' of the source poll", function(){
+          expect(testPollResults.dateStarted).toEqual(testPoll.dateStarted)
         });
 
-      });
-    });
+        it("matches the 'dateStopped' of the source poll", function(){
+          expect(testPollResults.dateStopped).toEqual(testPoll.dateStopped)
+        });
 
-    describe("poll.destroy()", function(){
-      it("exists", function(){
-        expect(testPoll.destroy).toBeDefined();
-        expect(typeof testPoll.destroy).toEqual("function"); // or .not.tobedefined();
+        it("matches the 'options' of the source poll", function(){
+          expect(testPollResults.options).toEqual(testPoll.options)
+        });
+
+        it("matches the 'title' of the source poll", function(){
+          expect(testPollResults.title).toEqual(testPoll.title)
+        });
       });
 
-      it("returns true", function(){
-        var result = testPoll.destroy();
-        expect(result).toBe(true);
-      });
-
-      describe("a destroyed poll", function(){
-        var myPolls;
-        it("is no longer found in japi.polls.getList()", function(){
-          myPolls = japi.polls.getList();
-          expect(typeof myPolls).toEqual("object");
-          expect(typeof myPolls.length).toEqual("number");
-
-          var found = false;
-          for(var i=0; i<myPolls.length; i++){
-            if(myPolls[i].id === testPoll.id){
-              found = true;
-            };
-          };
-          expect(found).toBe(false);
-   
+      describe("pollResults.'stats'", function(){
+        it("is an object", function(){
+          expect(typeof testPollResults.stats).toEqual("object"); 
         });
-
-        it("has a status of 'destroyed' on existing reflected objects", function(){
-          expect(testPoll.status).toEqual("destroyed");
+        it("has an integer 'sent' property", function(){
+          expect(typeof testPollResults.stats.sent).toEqual("number"); 
+          expect(testPollResults.stats.sent % 1).toEqual(0); 
         });
-
-        it("has a status of 'destroyed' on japi.poll.get(destroyed_id)", function(){
-          myPoll = japi.polls.get(testPoll.id);
-          expect(myPoll.status).toEqual("destroyed");
+        it("has an integer 'responded' property", function(){
+          expect(typeof testPollResults.stats.responded).toEqual("number"); 
+          expect(testPollResults.stats.responded % 1).toEqual(0); 
+        });
+        it("has an integer 'pending' property", function(){
+          expect(typeof testPollResults.stats.pending).toEqual("number"); 
+          expect(testPollResults.stats.pending % 1).toEqual(0); 
+        });
+        it("has an integer 'invalid' property", function(){
+          expect(typeof testPollResults.stats.invalid).toEqual("number"); 
+          expect(testPollResults.stats.invalid % 1).toEqual(0); 
         });
       });
 
     });
+
 
   });
 
