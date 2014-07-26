@@ -338,6 +338,7 @@ describe("japi.js", function(){
       it("reflects changes from its parent poll object", function(){
         testPoll.description = "reflect me";
         testPoll.save();
+        testPollResults = testPoll.getResults();
         expect(testPollResults.description).toEqual("reflect me");
       });
 
