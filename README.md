@@ -81,7 +81,7 @@ Open Tools > Ballotmaster
     describe("japi.polls.get(testPoll.id)", function(){
       it("exists", function(){
         expect(japi.polls.get).not.toEqual({});
-        expect(japi.polls.get).not.toEqual(undefined); // or .not.tobedefined();
+        expect(japi.polls.get).not.toEqual(undefined);
       });
 
       it("returns a found poll object by ID", function(){

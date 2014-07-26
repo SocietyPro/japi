@@ -69,7 +69,7 @@ describe("japi.js", function(){
       describe(".build()", function(){
         it("exists", function(){
           expect(japi.polls.build).not.toEqual({});
-          expect(japi.polls.build).not.toEqual(undefined); // or .not.tobedefined();
+          expect(japi.polls.build).not.toEqual(undefined);
         });
         it("returns a skeleton poll object", function(){
           testPoll = japi.polls.build();
@@ -125,7 +125,7 @@ describe("japi.js", function(){
             describe(".start()", function(){
               it("exists", function(){
                 expect(testPoll.start).toBeDefined();
-                expect(typeof testPoll.start).toEqual("function"); // or .not.tobedefined();
+                expect(typeof testPoll.start).toEqual("function");
               });
 
               it("Sets the parent poll's .status field to 'started'", function(){
@@ -145,7 +145,7 @@ describe("japi.js", function(){
             describe(".stop()", function(){
               it("exists", function(){
                 expect(testPoll.stop).toBeDefined();
-                expect(typeof testPoll.stop).toEqual("function"); // or .not.tobedefined();
+                expect(typeof testPoll.stop).toEqual("function");
               });
 
               it("Sets the parent poll's .status field to 'stopped'", function(){
@@ -165,7 +165,7 @@ describe("japi.js", function(){
             describe(".getResults", function(){
               it("exists", function(){
                 expect(testPoll.getResults).toBeDefined();
-                expect(typeof testPoll.getResults).toEqual("function"); // or .not.tobedefined();
+                expect(typeof testPoll.getResults).toEqual("function");
               });
 
               it("returns a pollResults object", function(){
@@ -178,7 +178,7 @@ describe("japi.js", function(){
             describe(".destroy()", function(){
               it("exists", function(){
                 expect(testPoll.destroy).toBeDefined();
-                expect(typeof testPoll.destroy).toEqual("function"); // or .not.tobedefined();
+                expect(typeof testPoll.destroy).toEqual("function");
               });
 
               it("returns true", function(){
@@ -291,7 +291,7 @@ describe("japi.js", function(){
       */
       it("exists", function(){
         expect(japi.polls.get).not.toEqual({});
-        expect(japi.polls.get).not.toEqual(undefined); // or .not.tobedefined();
+        expect(japi.polls.get).not.toEqual(undefined);
       });
 
       it("returns a found poll object by ID", function(){
@@ -311,7 +311,7 @@ describe("japi.js", function(){
     describe("japi.polls.getList()", function(){
       it("exists", function(){
         expect(japi.polls.getList).not.toEqual({});
-        expect(japi.polls.getList).not.toEqual(undefined); // or .not.tobedefined();
+        expect(japi.polls.getList).not.toEqual(undefined);
       });
 
       var myPolls;
