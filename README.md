@@ -8,7 +8,7 @@ This repo holds `japi.js` and its associated test suite.
 `japi.js` is a javascript API for Society<sup>PRO</sup> users. 
 
 Society<sup>PRO</sup> is written in C++, and natively provides some Javascript API calls that wrap C++ functions. These wrapped functions can be accessed in any Javascript global scope in an object called
-`SO_PRO`
+`SO_PRO`.
 
 `japi.js` provides a wrapper over these API calls, offering developers access to
 Society<sub>PRO</sub>'s capabilities using standard Javascript conventions.
@@ -18,9 +18,15 @@ When `SO_PRO.JAPI` is invoked `()` it returns a client-side module, documented
 on [the Society<sub>PRO</sub>
 wiki](http://group.cambrian.org/wiki/doku.php?id=japi.js).
 
-Expected use:
+## Expected japi.js use 
+(Note, the name change from `Cambrian` to `SO_PRO` is not yet
+committed; use Cambrian.JAPI)
 
-    var japi = SO_PRO.JAPI();
+    <script src="js/japi.js" type="text/javascript></script>
+
+    // Subsequent script:
+    //var japi = SO_PRO.JAPI(); 
+    var japi = Cambrian.JAPI(); 
     console.log(japi.me.name); // "plato-dev"
     var thisAppPermissionGranted
         = japi.permissions.role.getAllNymRoles; //false
