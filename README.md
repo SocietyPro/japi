@@ -1,17 +1,18 @@
 html5-japi-tests
 ================
 
-This repo holds japi.js and its associated test suite.
-japi.js is a javascript library for client scripts to make calls to the Society<sup>PRO</sup> Javascript API.
+This repo holds `japi.js` and its associated test suite.
+
+`japi.js` is a javascript library for client scripts to make calls to the Society<sup>PRO</sup> Javascript API.
 
 ## japi.js
 
 `japi.js` is a javascript API for Society<sup>PRO</sup> users. 
 
 Society<sup>PRO</sup> natively provides some API calls from an object called
-SO_PRO that is found in every javascript global scope within Society<sup>PRO</sup>.
+`SO_PRO` that is found in every javascript global scope within Society<sup>PRO</sup>.
 
-japi.js creates a Javascript function object SO_PRO.JAPI. When invoked () it
+`japi.js` creates a Javascript function object `SO_PRO.JAPI`. When invoked `()` it
 returns a client-side module, documented at [http://group.cambrian.org/wiki/doku.php?id=japi.js](http://group.cambrian.org/wiki/doku.php?id=japi.js)
 
 Expected use:
