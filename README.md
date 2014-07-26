@@ -62,22 +62,59 @@ Rename or copy `index.html` to `default.htm`
 Start Cambrian  
 Open Tools > Ballotmaster  
 
+## Example JAPI Function
+
+    var Cambrian = Cambrian || {}
+    Cambrian.JAPI = function(){
+      var japi = {
+        polls: {},
+      }
+      japi.polls.get = function(UUID, callback){
+        //setTimeout(function(){ callback(null, false) }, 200);
+        myPoll = Cambrian.polls.get(UUID);
+        return myPoll;
+      };
+    }
+
+## Example JAPI Test
+
+    describe("japi.polls.get(testPoll.id)", function(){
+      it("exists", function(){
+        expect(japi.polls.get).not.toEqual({});
+        expect(japi.polls.get).not.toEqual(undefined); // or .not.tobedefined();
+      });
+
+      it("returns a found poll object by ID", function(){
+        var idToSearch = testPoll.id;
+        var foundPoll = japi.polls.get(idToSearch);
+        expect(typeof foundPoll).toEqual("object");
+        expect(foundPoll.id).toEqual(idToSearch);
+      });
+
+      it("returns null if no poll object is found", function(){
+        var myPoll = japi.polls.get("UUID100");
+        expect(myPoll).toBe(null);
+      });
+
+    });
+
 ## Example Mock JAPI Function
 
     var Cambrian = Cambrian || {}
     Cambrian.JAPI = function(){
-    var japi = {
-      peer: {
-        ping: {},
+      var japi = {
+        peer: {
+          ping: {},
+        }
+      };
+       ...
+      japi.peer.ping = function(callback){
+        //setTimeout(function(){ callback(null, false) }, 200);
+        return 33;
       }
-    };
-     ...
-    japi.peer.ping = function(callback){
-      //setTimeout(function(){ callback(null, false) }, 200);
-      return 33;
+       ...
+      return japi;
     }
-     ...
-    return japi;
 
 ## Example Mock JAPI Test
 
