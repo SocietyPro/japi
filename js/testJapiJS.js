@@ -102,11 +102,11 @@ describe("japi.js", function(){
           });
 
           it("has a null 'dateStarted'", function(){
-            expect(testPoll.dateStarted).toEqual("null");
+            expect(testPoll.dateStarted).toBeNull();
           });
 
           it("has a null 'dateStopped'", function(){
-            expect(testPoll.dateStopped).toEqual("null");
+            expect(testPoll.dateStopped).toBeNull();
           });
 
           it("has a falsy 'pollTimeLength'", function(){
