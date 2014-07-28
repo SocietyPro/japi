@@ -202,15 +202,15 @@ describe("japi.js", function(){
                   expect(found).toBe(false);
            
                 });
+                it("is no longer found by japi.polls.get(destroyedPollId)", function(){
+                  myPoll = japi.polls.get(testPoll.id);
+                  expect(myPoll).toBeNull();
+                });
 
-                it("has a status of 'destroyed' on existing reflected objects", function(){
+                it("has a status of 'unsaved' on existing reflected objects", function(){
                   expect(testPoll.status).toEqual("destroyed");
                 });
 
-                it("has a status of 'destroyed' on japi.poll.get(destroyed_id)", function(){
-                  myPoll = japi.polls.get(testPoll.id);
-                  expect(myPoll.status).toEqual("destroyed");
-                });
               });
 
             });
@@ -221,9 +221,14 @@ describe("japi.js", function(){
 
       it("sets up a new testPoll after testPoll.destroy()", function(){
         testPoll = japi.polls.build();
+        testPoll.title = "test title";
+        testPoll.description = "for testing purposes only";
+        testPoll.type = "Test Poll";
+        testPoll.pollTimeLength = 1000*60*60; // one hour
       });
 
       describe(".build(testPoll)", function(){
+        var copyPoll;
 
         it("returns a copyPoll object", function(){
           //testPoll = japi.polls.build();
