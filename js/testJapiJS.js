@@ -208,7 +208,7 @@ describe("japi.js", function(){
                 });
 
                 it("has a status of 'unsaved' on existing reflected objects", function(){
-                  expect(testPoll.status).toEqual("destroyed");
+                  expect(testPoll.status).toEqual("unsaved");
                 });
 
               });
