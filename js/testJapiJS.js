@@ -50,21 +50,6 @@ describe("japi.js", function(){
     var testPollResults;
     // we'll use this throughout our tests
 
-    /*
-    describe("testPoll = poll.build()", function(){
-      it("returns an object", function(){
-        expect(testPoll).toBeDefined();
-      });
-      it("has a string id", function(){
-        expect(typeof testPoll.id).toEqual("string");
-      });
-      it("has a save method", function(){
-        expect(typeof testPoll.save).toEqual("function");
-      });
-    });
-    */
-
-
     describe(".build constructor variants", function(){
       describe(".build()", function(){
         it("exists", function(){
@@ -225,6 +210,7 @@ describe("japi.js", function(){
         testPoll.description = "for testing purposes only";
         testPoll.type = "Test Poll";
         testPoll.pollTimeLength = 1000*60*60; // one hour
+        testPoll.save();
       });
 
       describe(".build(testPoll)", function(){
