@@ -128,6 +128,7 @@ describe("japi.js", function(){
           //var myPoll = japi.polls.build();
           expect(typeof testPoll).toEqual("object");
         });
+
         describe("skeleton poll object", function(){
           it("has a string 'id'", function(){
             expect(typeof testPoll.id).toEqual("string");
@@ -146,6 +147,11 @@ describe("japi.js", function(){
           it("has an empty string 'description'", function(){
             expect(typeof testPoll.description).toEqual("string");
             expect(testPoll.description).toEqual("");
+          });
+
+          it("has an array of 'options'", function(){
+            expect(typeof testPoll.options).toEqual("object");
+            expect(typeof testPoll.options.length).toEqual("number");
           });
 
           it("has a string 'status' == 'unsaved'", function(){
