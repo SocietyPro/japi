@@ -229,6 +229,8 @@ describe("japi.js", function(){
               it("returns a pollResults object", function(){
                 testPollResults = testPoll.getResults();
                 expect(testPollResults).toBeDefined();
+                expect(testPollResults.title).toBeDefined();
+                expect(testPollResults.id).not.toEqual(testPoll.id);
               });
 
             });
