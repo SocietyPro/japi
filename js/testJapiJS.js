@@ -6,8 +6,7 @@ japi = new Cambrian.JAPI();
 describe("japi.js", function(){
 
   it("Synchronously instantiates JAPI", function(){
-    // Moved instantiation above top describe block, so it's available if you
-    // run a sibling spec solo.
+    japi = new Cambrian.JAPI();
     expect(japi).not.toEqual({});
     expect(japi).not.toEqual(undefined); // or .not.toBeDefined();
   });
@@ -113,8 +112,17 @@ describe("japi.js", function(){
       expect(japi.polls).not.toEqual(undefined); // or .not.toBeDefined();
     });
 
+    
     var testPoll; 
     var testPollResults;
+    beforeEach(function(){
+      testPoll = japi.polls.build();
+      testPoll.save();
+    });
+    afterEach(function(){
+      testPoll.destroy();
+    });
+    
     // we'll use this throughout our tests
 
     describe(".build constructor variants", function(){
@@ -124,7 +132,7 @@ describe("japi.js", function(){
           expect(japi.polls.build).not.toEqual(undefined);
         });
         it("returns a skeleton poll object", function(){
-          testPoll = japi.polls.build();
+          //testPoll = japi.polls.build(); // moved to beforeEach()
           //var myPoll = japi.polls.build();
           expect(typeof testPoll).toEqual("object");
         });
@@ -192,6 +200,7 @@ describe("japi.js", function(){
               });
 
               it("Sets the parent poll's .timeStarted field to now", function(){
+                testPoll.start();
                 var tStart = new Date(testPoll.timeStarted).valueOf();
                 var tNow = new Date().valueOf();
                 var msDiff = Math.abs(tStart-tNow);
@@ -207,11 +216,14 @@ describe("japi.js", function(){
               });
 
               it("Sets the parent poll's .status field to 'stopped'", function(){
+                testPoll.start();
                 testPoll.stop();
                 expect(testPoll.status).toEqual("stopped"); 
               });
 
               it("Sets the parent poll's .timeStopped field to now", function(){
+                testPoll.start();
+                testPoll.stop();
                 var tStop = new Date(testPoll.timeStopped).valueOf();
                 var tNow = new Date().valueOf();
                 var msDiff = Math.abs(tStop-tNow);
@@ -249,6 +261,7 @@ describe("japi.js", function(){
               describe("a destroyed poll", function(){
                 var myPolls;
                 it("is no longer found in japi.polls.getList()", function(){
+                  testPoll.destroy();
                   myPolls = japi.polls.getList();
                   expect(typeof myPolls).toEqual("object");
                   expect(typeof myPolls.length).toEqual("number");
@@ -263,11 +276,13 @@ describe("japi.js", function(){
            
                 });
                 it("is no longer found by japi.polls.get(destroyedPollId)", function(){
+                  testPoll.destroy();
                   myPoll = japi.polls.get(testPoll.id);
                   expect(myPoll).toBeNull();
                 });
 
                 it("has a status of 'unsaved' on existing reflected objects", function(){
+                  testPoll.destroy();
                   expect(testPoll.status).toEqual("unsaved");
                 });
 
@@ -279,21 +294,19 @@ describe("japi.js", function(){
         });
       });
 
-      it("sets up a new testPoll after testPoll.destroy()", function(){
-        testPoll = japi.polls.build();
-        testPoll.title = "test title";
-        testPoll.description = "for testing purposes only";
-        testPoll.type = "Test Poll";
-        testPoll.pollTimeLength = 1000*60*60; // one hour
-        testPoll.save();
-      });
-
       describe(".build(testPoll)", function(){
         var copyPoll;
 
+        beforeEach(function(){
+          copyPoll = japi.polls.build(testPoll);
+        });
+        afterEach(function(){
+          copyPoll.destroy();
+        });
+
         it("returns a copyPoll object", function(){
           //testPoll = japi.polls.build();
-          copyPoll = japi.polls.build(testPoll);
+          //copyPoll = japi.polls.build(testPoll);
           expect(typeof copyPoll).toEqual("object");
           expect(typeof copyPoll.save).toEqual("function");
         });
@@ -348,13 +361,7 @@ describe("japi.js", function(){
     });
     
     describe("japi.polls.get(testPoll.id)", function(){
-      /*
-      it('Still has testPoll in scope', function(){
-        expect(testPoll).toBeDefined();
-        expect(testPoll.id).toBeDefined();
-        expect(typeof testPoll.id).toEqual("string");
-      });
-      */
+
       it("exists", function(){
         expect(japi.polls.get).not.toEqual({});
         expect(japi.polls.get).not.toEqual(undefined);
@@ -363,6 +370,7 @@ describe("japi.js", function(){
       it("returns a found poll object by ID", function(){
         var idToSearch = testPoll.id;
         var foundPoll = japi.polls.get(idToSearch);
+        expect(foundPoll).not.toBeNull();
         expect(typeof foundPoll).toEqual("object");
         expect(foundPoll.id).toEqual(idToSearch);
       });
@@ -388,6 +396,7 @@ describe("japi.js", function(){
       });
 
       it("includes testPoll in the returned objects", function(){
+        myPolls = japi.polls.getList();
         var found = false;
         for(var i=0; i<myPolls.length; i++){
           if(myPolls[i].id === testPoll.id){
@@ -401,10 +410,18 @@ describe("japi.js", function(){
 
     describe("pollResults", function(){
 
-      it("reflects changes from its parent poll object", function(){
+      beforeEach(function(){
         testPoll.description = "reflect me";
+        testPoll.title = 'test title';
+        testPoll.status = 'test status';
         testPoll.save();
         testPollResults = testPoll.getResults();
+      });
+      afterEach(function(){
+        testPollResults = {};
+      });
+
+      it("reflects changes from its parent poll object", function(){
         expect(testPollResults.description).toEqual("reflect me");
       });
 
