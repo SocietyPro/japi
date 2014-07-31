@@ -36,6 +36,73 @@ describe("japi.js", function(){
       var util = japi.util;
       expect(utils).toBe(util);
     });
+
+    describe(".formatDivide(numerator, denominator, decimalPlaces)", function(){
+      it("exists",function(){
+        expect(japi.utils.formatDivide).toBeDefined();
+      });
+
+      it("returns a String",function(){
+        var oneHalf = japi.utils.formatDivide(1,2,1);
+        expect(typeof oneHalf).toEqual("string");
+      });
+
+      it("throws ArgumentError if invoked without three Numbers",function(){
+        function shouldThrow(){
+          var oneHalf = japi.utils.formatDivide(1,2);
+        };
+        expect(shouldThrow).toThrow();
+      });
+
+      it("has decimalPlaces digits behind the decimal point", function(){
+        var twoK = japi.utils.formatDivide(10000, 5, 4);
+        expect(twoK).toEqual("2000.0000");
+      });
+
+      it("returns 'NaN' if you divide nonzero by zero",function(){
+        var _NAN = japi.utils.formatDivide(2,0,0);
+        expect(_NAN).toEqual("NaN");
+      });
+
+      it("returns '0.000...' if you divide zero by zero",function(){
+        var zero = japi.utils.formatDivide(0,0,5);
+        expect(zero).toEqual("0.00000");
+      });
+
+      it("removes a trailing decimal point if decimalPlaces == 0",function(){
+        var fourThirds = japi.utils.formatDivide(4,3,0);
+        expect(fourThirds).toEqual("1"); //we chomped the precision
+      });
+
+    });
+
+    describe(".formatPercent", function(){
+      it("exists", function(){
+        expect(japi.utils.formatPercent).toBeDefined();
+      });
+      it("returns a string", function(){
+        var result = japi.utils.formatPercent(1,2,1);
+        expect(typeof result).toEqual("string");
+      });
+      it("is 100x larger than a similar division", function(){
+        var result = japi.utils.formatPercent(1,2,1);
+        expect(result.match(/^50/)).toBeTruthy();
+        expect(result.match(/^0\.5/)).toBeFalsy();
+      });
+      it("puts ' %' after the numeric result", function(){
+        var result = japi.utils.formatPercent(1,2,1);
+        expect(result.match(/ %$/)).toBeTruthy();
+      });
+      it("includes decimalPlaces digits after a decimal point", function(){
+        var result = japi.utils.formatPercent(1,2,5);
+        expect(result).toEqual("50.00000 %");
+      });
+      it("assumes 0 decimal places if you omit the decimalPlaces argument", function(){
+        var result = japi.utils.formatPercent(1,2);
+        expect(result).toEqual("50 %");
+      });
+
+    });
   });
 
   describe("japi.polls", function(){
@@ -166,9 +233,9 @@ describe("japi.js", function(){
                 expect(typeof testPoll.destroy).toEqual("function");
               });
 
-              it("returns true", function(){
+              it("returns undefined", function(){
                 var result = testPoll.destroy();
-                expect(result).toBe(true);
+                expect(result).not.toBeDefined();
               });
 
               describe("a destroyed poll", function(){

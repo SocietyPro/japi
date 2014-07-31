@@ -79,6 +79,62 @@ Cambrian.JAPI = function(){
   };
   */
 
+  japi.utils.formatDivide = function(numerator, denominator, decimalPlaces){
+    // All three inputs should be Numbers
+    // Output: A string representing the division result formatted to decimalPlaces.
+    // e.g. formatDivide(1,4,4) => "0.2500" 
+    // Division by 0 should yield "NaN", 
+    // EXCEPT in the case where numerator also equals 0,
+    // in which case, yield "0.000..." formatted to decimalPlaces.
+
+    if( (typeof arguments[0] !== "number")
+      ||(typeof arguments[1] !== "number")
+      ||(typeof arguments[2] !== "number") )
+      { throw new Error("ArgumentError: formatDivide takes three Numbers") };
+
+
+    var result;
+
+    if(numerator == 0 && denominator == 0){
+      result = 0;
+    } else if (denominator == 0) {
+      return "NaN"
+    } else {
+      result = (numerator / denominator);
+    };
+
+    var zeroes = "";
+    while(zeroes.length < decimalPlaces){
+      zeroes += "0";
+    };
+
+    var str = result.toString();
+    var strMatch = str.match(/\./);
+
+    if(strMatch){ // found a decimal point
+      // make sure there's enough zeroes at the end e.g. 10.1 > "10.100" :
+      str += zeroes; 
+      // Slice any excess characters:
+      var sliceEnd = strMatch.index + 1 + decimalPlaces;
+      str = str.slice(0, sliceEnd); 
+    } else { 
+      // no decimal point found, add a decimal point and decimalPlaces zeroes
+      str = str + '.' + zeroes;
+    };
+
+    //For the special case where decimalPlaces == 0, remove the trailing decimal point:
+    if(decimalPlaces == 0){ str = str.slice(0, -1); };
+
+    return str;
+  }
+
+  japi.utils.formatPercent = function(numerator, denominator, decimalPlaces){
+    if(arguments[2] == undefined){ decimalPlaces = 0 };
+    var percent = japi.utils.formatDivide(numerator * 100, denominator, decimalPlaces);
+    percent += " %";
+    return percent;
+  };
+
 
 
   /*
