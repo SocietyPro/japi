@@ -204,7 +204,7 @@ describe("japi.js", function(){
                 var tStart = new Date(testPoll.timeStarted).valueOf();
                 var tNow = new Date().valueOf();
                 var msDiff = Math.abs(tStart-tNow);
-                expect(msDiff < 1000*60).toEqual("true"); 
+                expect(msDiff < 1000*60).toEqual(true); 
                 // Less than one minute between Cambrian marking the poll as started, and this script executing the test
               });
             });
@@ -227,7 +227,7 @@ describe("japi.js", function(){
                 var tStop = new Date(testPoll.timeStopped).valueOf();
                 var tNow = new Date().valueOf();
                 var msDiff = Math.abs(tStop-tNow);
-                expect(msDiff < 1000*60).toEqual("true"); 
+                expect(msDiff < 1000*60).toEqual(true); 
                 // Less than one minute between Cambrian marking the poll as stopped, and this script executing the test
               });
             });
