@@ -199,9 +199,9 @@ describe("japi.js", function(){
                 expect(testPoll.status).toEqual("started"); 
               });
 
-              it("Sets the parent poll's .timeStarted field to now", function(){
+              it("Sets the parent poll's .dateStarted field to now", function(){
                 testPoll.start();
-                var tStart = new Date(testPoll.timeStarted).valueOf();
+                var tStart = new Date(testPoll.dateStarted).valueOf();
                 var tNow = new Date().valueOf();
                 var msDiff = Math.abs(tStart-tNow);
                 expect(msDiff < 1000*60).toEqual(true); 
@@ -221,10 +221,10 @@ describe("japi.js", function(){
                 expect(testPoll.status).toEqual("stopped"); 
               });
 
-              it("Sets the parent poll's .timeStopped field to now", function(){
+              it("Sets the parent poll's .dateStopped field to now", function(){
                 testPoll.start();
                 testPoll.stop();
-                var tStop = new Date(testPoll.timeStopped).valueOf();
+                var tStop = new Date(testPoll.dateStopped).valueOf();
                 var tNow = new Date().valueOf();
                 var msDiff = Math.abs(tStop-tNow);
                 expect(msDiff < 1000*60).toEqual(true); 
