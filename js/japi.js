@@ -17,7 +17,7 @@ Cambrian.JAPI = function(){
     utils: {
     },
     polls: {
-      myTemplates: {},
+      templates: {},
     },
   }
 
@@ -174,32 +174,35 @@ Cambrian.JAPI = function(){
     };
   };
 
-  japi.polls.getList = function(callback){
-    //setTimeout(function(){ callback(null, false) }, 200);
-    var list = Cambrian.polls.getList();
-    return list;
-  };
-
   japi.polls.get = function(UUID, callback){
     //setTimeout(function(){ callback(null, false) }, 200);
     myPoll = Cambrian.polls.get(UUID);
     return myPoll;
   };
 
-  /* Not yet specced:
-  japi.polls.myTemplates.save = function(UUID, XML, callback){
-    setTimeout(function(){ callback(null, false) }, 200);
+  japi.polls.getList = function(callback){
+    //setTimeout(function(){ callback(null, false) }, 200);
+    var list = Cambrian.polls.getList();
+    return list;
   };
-  japi.polls.myTemplates.get = function(UUID, callback){
-    setTimeout(function(){ callback(null, false) }, 200);
+
+  japi.polls.getExamples = function(){
+    return [];
   };
-  japi.polls.myTemplates.list = function(callback){
-    setTimeout(function(){ callback(null, false) }, 200);
+
+  japi.polls.getPeerRecommended = function(){
+    return [];
   };
-  japi.polls.myTemplates.delete = function(UUID, callback){
-    setTimeout(function(){ callback(null, false) }, 200);
+
+  japi.polls.templates.get = function(UUID, callback){
+    return {};
   };
-  */
+  japi.polls.templates.list = function(callback){
+    return [];
+  };
+  japi.polls.templates.build = function(source, callback){
+    return {};
+  };
 
   /* set aliases after defining everything: */
   japi.util = japi.utils;
