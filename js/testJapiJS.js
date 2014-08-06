@@ -242,7 +242,6 @@ describe("japi.js", function(){
                 testPollResults = testPoll.getResults();
                 expect(testPollResults).toBeDefined();
                 expect(testPollResults.title).toBeDefined();
-                expect(testPollResults.id).not.toEqual(testPoll.id);
               });
 
             });
@@ -353,8 +352,50 @@ describe("japi.js", function(){
       });
 
       describe(".build(pollTemplate)", function(){
-        it("is specced", function(){
+        var pollTemplate;
+        var copyPoll;
+
+        beforeEach(function(){
+          copyPoll = japi.polls.build(pollTemplate);
+        });
+
+        afterEach(function(){
+          if(copyPoll && copyPoll.destroy){ copyPoll.destroy(); };
+          copyPoll = undefined;
+        });
+
+        it("has all properties specced", function(){
           expect(pollTemplateSpec).toBeDefined();
+        });
+
+        it("builds a poll when an incomplete template is passed", function(){
+          pollTemplate = {
+            title: 'Incomplete pollTemplate',
+            save: function(){
+              console.log('This is pollTemplate.save()');
+            },
+            destroy: function(){
+              console.log('This is pollTemplate.destroy()');
+            },
+          };
+          copyPoll = japi.polls.build(pollTemplate);
+          expect(copyPoll.title).toEqual('Incomplete pollTemplate');
+          expect(copyPoll.save).toBeDefined();
+          expect(typeof copyPoll.save).toEqual('function');
+        });
+
+        it("sets non-existing properties to defaults", function(){
+          expect(copyPoll.description).toEqual("");
+        });
+
+        it("saves the poll when copyPoll.save() is called", function(){
+          copyPoll.save();
+          expect(copyPoll.status).toEqual("saved");
+        });
+
+        it("destroys the poll when copyPoll.destroy() is called", function(){
+          copyPoll.destroy();
+          expect(copyPoll.status).toEqual("unsaved");
         });
       });
 
