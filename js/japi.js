@@ -186,11 +186,11 @@ Cambrian.JAPI = function(){
     return list;
   };
 
-  japi.polls.getExamples = function(){
+  japi.polls.templates.getExamples = function(){
     return [];
   };
 
-  japi.polls.getPeerRecommended = function(){
+  japi.polls.templates.getPeerRecommended = function(){
     return [];
   };
 
