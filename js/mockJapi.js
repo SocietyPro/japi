@@ -1,11 +1,16 @@
-var Cambrian = Cambrian || {}
-Cambrian.JAPI = function(){
+var Cambrian = Cambrian || {isMockCambrian:true}
+
+Cambrian.idSeed = 0;
+
+Cambrian.mockJAPI = function(){
   // Define some children objects, this is necessary because trying to set
   // more than one deep of an undefined object fails.
   // {}.foo=true works but {}.foo.bar=true doesn't: 
   // TypeError: Cannot set property 'bar' of undefined
 
   var japi = {
+    me: {
+    },
     peer: {
       ping: {},
       recommendations: {},
@@ -17,9 +22,43 @@ Cambrian.JAPI = function(){
     utils: {
     },
     polls: {
+      templates: {},
       myTemplates: {},
     },
   }
+
+  /* Our mocks don't have a start function but we need it for testing. Adding
+   * here:
+   */
+  var listOfPollMocks = Cambrian.pollApp.mockPolls;
+  var listOfPolls = listOfPollMocks.map(function(mock){
+    mock.start = function(){
+      console.log('Starting mock');
+      mock.status = 'started';
+      mock.dateStarted = new Date();
+    };
+    return mock;
+  });
+
+  var listOfTemplates = Cambrian.pollApp.mockTemplates;
+  var listOfExampleTemplates = Cambrian.pollApp.exampleTemplates;
+  
+  /* 
+   * JAPI ME API
+   * These functions give apps access to context about the current role
+   */
+
+  japi.me.peers = function(){
+    return Cambrian.pollApp.mockTargets.peers;
+  };
+
+  japi.me.groups = function(){
+    return Cambrian.pollApp.mockTargets.groups;
+  };
+
+  japi.me.peerLists = function(){
+    return Cambrian.pollApp.mockTargets.peerLists;
+  };
 
   /* 
    * JAPI PEER API
@@ -70,7 +109,8 @@ Cambrian.JAPI = function(){
    */
 
   japi.utils.getUUID = function(){
-    return "UUID1";
+    Cambrian.idSeed++;
+    return "UUID" + Cambrian.idSeed.toString();
   };
 
 
@@ -85,15 +125,33 @@ Cambrian.JAPI = function(){
     // of each, or something else invalid.
     var mockPoll = {
         id: japi.utils.getUUID(), 
-        title: "Mock Poll",
+        title: "",
         status: "deleted", 
         dateStarted: null,
-        save: function(){},
-        start: function(){},
+        options: [],
+        save: function(){
+          savePoll(this)
+        },
+        start: function(){
+          console.log("Starting Poll");
+          this.dateStarted = new Date();
+          this.status = "started";
+        },
         stop: function(){},
         getResults: function(){},
         delete: function(){},
       };
+
+    var savePoll = function (poll) {
+      for (var i = 0; i < listOfPolls.length; i++) {
+        if (listOfPolls[i].id === poll.id) {
+          listOfPolls[i] = poll;
+          return undefined;
+        };
+        listOfPolls.push(poll);
+        return undefined;
+      }
+    };
 
     function copyPoll(source){
       //  source might be a poll OR a template 
@@ -105,19 +163,24 @@ Cambrian.JAPI = function(){
         };
       };
       // override some properties with defaults:
-      tmp.id = "UUID2";
+      tmp.id = japi.utils.getUUID;
       tmp.status = "deleted";
+      listOfPolls.push(tmp);
       return tmp;
     };
 
     if(arguments.length === 0){ 
       // No arguments. Return a new poll synchronously.
-      return mockPoll;
+      var builtPoll = mockPoll;
+      return builtPoll;
     } else if(arguments.length === 1 && typeof source === "function"){
       // One callback argument passed in. 
       // Return undefined now; call the callback asynchronously w/ the new poll.
       setTimeout(function(){ 
-        callback(null, mockPoll) 
+        callback(null, function () {
+          var builtPoll = mockPoll;
+          return builtPoll;
+        }); 
       }, 200);
       return undefined;
     } else if(arguments.length === 1 && typeof source === "object") {
@@ -141,37 +204,121 @@ Cambrian.JAPI = function(){
 
   japi.polls.getList = function(callback){
     //setTimeout(function(){ callback(null, false) }, 200);
-    var poll1 = japi.polls.build();
-    var poll2 = japi.polls.build();
-    poll2.id = "UUID2";
-    return [poll1, poll2];
+    //var poll1 = japi.polls.build();
+    //var poll2 = japi.polls.build();
+    return listOfPolls;
   };
 
   japi.polls.get = function(UUID, callback){
     //setTimeout(function(){ callback(null, false) }, 200);
-    if(UUID.match(/^UUID[0-9]$/)){ // Succeed on UUID0 to UUID9; otherwise fail
+    /*if(UUID.match(/^UUID[0-9]$/)){ // Succeed on UUID0 to UUID9; otherwise fail
       var myPoll = japi.polls.build();
       myPoll.id = UUID;
       return myPoll;
     } else {
       return false;
-    };
+    }; */
+
+    for (var i = 0; i < listOfPolls.length; i++) {
+      if (listOfPolls[i].id === UUID) {
+        return listOfPolls[i];
+      }
+      return false;
+    }
   };
 
-  /* Not yet specced:
-  japi.polls.myTemplates.save = function(UUID, XML, callback){
-    setTimeout(function(){ callback(null, false) }, 200);
+  japi.polls.getExamples = function(){
+    return listOfPolls;
   };
-  japi.polls.myTemplates.get = function(UUID, callback){
-    setTimeout(function(){ callback(null, false) }, 200);
+
+  japi.polls.getPeerRecommended = function(){
+    return listOfPolls;
   };
-  japi.polls.myTemplates.list = function(callback){
-    setTimeout(function(){ callback(null, false) }, 200);
+
+  japi.polls.templates.list = function(){
+    return listOfTemplates;
   };
-  japi.polls.myTemplates.delete = function(UUID, callback){
-    setTimeout(function(){ callback(null, false) }, 200);
+
+  japi.polls.templates.listExamples = function () {
+    return listOfExampleTemplates;
   };
-  */
+
+
+  japi.polls.templates.build = function(source, callback){
+    // This might be called with one source argument, one callback argument, one
+    // of each, or something else invalid.
+    var mockTemplate = {
+        id: japi.utils.getUUID(), 
+        title: "", 
+        options: [],
+        allowMultipleChoices: false,
+        allowComments: false,
+        dismissText: "Dismiss",
+        submitText: "Submit",
+        save: function(){
+          saveTemplate(this)
+        },
+        delete: function(){},
+      };
+
+    var saveTemplate = function (template) {
+      for (var i = 0; i < listOfTemplates.length; i++) {
+        if (listOfTemplates[i].id === template.id) {
+          listOfTemplates[i] = template;
+          return undefined;
+        };
+        listOfTemplates.push(template);
+        return undefined;
+      }
+    };
+
+    function copyTemplate(source){
+      //  source might be a poll OR a template 
+      // copy all properties from source:
+      var tmp = {};
+      for( prop in source ){
+        if(source.hasOwnProperty(prop)){
+          tmp[prop] = source[prop];
+        };
+      };
+      // override some properties with defaults:
+      tmp.id = japi.utils.getUUID;
+      listOfTemplates.push(tmp);
+      return tmp;
+    };
+
+    if(arguments.length === 0){ 
+      // No arguments. Return a new poll synchronously.
+      var builtTemplate = mockTemplate;
+      return builtTemplate;
+    } else if(arguments.length === 1 && typeof source === "function"){
+      // One callback argument passed in. 
+      // Return undefined now; call the callback asynchronously w/ the new poll.
+      setTimeout(function(){ 
+        callback(null, function () {
+          var builtTemplate = mockTemplate;
+          return builtTemplate;
+        }); 
+      }, 200);
+      return undefined;
+    } else if(arguments.length === 1 && typeof source === "object") {
+      // One source object passed in.
+      // Create a similar object from source object + defaults and return it sync.
+      return copyTemplate(source);
+    } else if(typeof source !== "object" && typeof callback !== "function"){
+      // Bad argument syntax
+      return new Error("japi.polls.templates.build() called with invalid arguments:\n"+arguments)
+    } else {
+      // we have at least 2 args AND source is an object AND callback is a fn
+      // Create a similar object from source object + defaults;
+      // Return undefined now; call the callback asynchronously w/ the new poll.
+      setTimeout(function(){ 
+        var newTemplate = copyTemplate(source);
+        callback(null, newTemplate) 
+      }, 200);
+      return undefined;
+    };
+  };
 
   /* set aliases after defining everything: */
   japi.util = japi.utils;
