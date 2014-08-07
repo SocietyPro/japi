@@ -1,3 +1,6 @@
+if(Cambrian === undefined || Cambrian.isMockCambrian === true){
+  throw("japi.js needs a root object Cambrian.")
+};
 var Cambrian = Cambrian || {}
 Cambrian.JAPI = function(){
   // Define some children objects, this is necessary because trying to set
