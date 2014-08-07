@@ -42,6 +42,7 @@ Cambrian.mockJAPI = function(){
 
   var listOfTemplates = Cambrian.pollApp.mockTemplates;
   var listOfExampleTemplates = Cambrian.pollApp.exampleTemplates;
+  var listOfRecommendedTemplates = Cambrian.pollApp.mockPeerTemplates;
   
   /* 
    * JAPI ME API
@@ -232,7 +233,11 @@ Cambrian.mockJAPI = function(){
   };
 
   japi.polls.getPeerRecommended = function(){
+<<<<<<< Updated upstream
     return listOfPolls;
+=======
+    return listOfRecommendedTemplates;
+>>>>>>> Stashed changes
   };
 
   japi.polls.templates.list = function(){
