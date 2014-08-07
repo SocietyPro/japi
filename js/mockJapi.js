@@ -233,11 +233,7 @@ Cambrian.mockJAPI = function(){
   };
 
   japi.polls.getPeerRecommended = function(){
-<<<<<<< Updated upstream
-    return listOfPolls;
-=======
     return listOfRecommendedTemplates;
->>>>>>> Stashed changes
   };
 
   japi.polls.templates.list = function(){
