@@ -166,6 +166,8 @@ Cambrian.mockJAPI = function(){
       // override some properties with defaults:
       tmp.id = japi.utils.getUUID;
       tmp.status = "deleted";
+      console.log(source);
+      console.log(tmp);
       listOfPolls.push(tmp);
       return tmp;
     };
@@ -233,11 +235,7 @@ Cambrian.mockJAPI = function(){
   };
 
   japi.polls.getPeerRecommended = function(){
-<<<<<<< Updated upstream
-    return listOfPolls;
-=======
     return listOfRecommendedTemplates;
->>>>>>> Stashed changes
   };
 
   japi.polls.templates.list = function(){
