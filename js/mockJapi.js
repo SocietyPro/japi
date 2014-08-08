@@ -27,11 +27,23 @@ Cambrian.mockJAPI = function(){
     },
   }
 
-  /* Our mocks don't have a start function but we need it for testing. Adding
+  var destroyPoll = function (poll) {
+    var index = listOfPolls.indexOf(poll);
+
+    if (index > -1) {
+      listOfPolls.splice(index, 1);
+    }
+  };
+
+  /* Our mocks don't have a start or delete function but we need it for testing. Adding
    * here:
    */
   var listOfPollMocks = Cambrian.pollApp.mockPolls;
   var listOfPolls = listOfPollMocks.map(function(mock){
+    mock.destroy = function () {
+      console.log('Destroying mock');
+      destroyPoll(this);
+    };
     mock.start = function(){
       console.log('Starting mock');
       mock.status = 'started';
@@ -131,7 +143,7 @@ Cambrian.mockJAPI = function(){
         dateStarted: null,
         options: [],
         save: function(){
-          savePoll(this)
+          savePoll(this);
         },
         start: function(){
           console.log("Starting Poll");
@@ -140,7 +152,9 @@ Cambrian.mockJAPI = function(){
         },
         stop: function(){},
         getResults: function(){},
-        delete: function(){},
+        destroy: function(){
+          destroyPoll(this);
+        },
       };
 
     var savePoll = function (poll) {
