@@ -52,7 +52,22 @@ Cambrian.mockJAPI = function(){
     return mock;
   });
 
-  var listOfTemplates = Cambrian.pollApp.mockTemplates;
+  var destroyTemplate = function (template) {
+    var index = listOfTemplates.indexOf(template);
+
+    if (index > -1) {
+      listOfTemplates.splice(index, 1);
+    }
+  };
+
+  var listOfTemplateMocks = Cambrian.pollApp.mockTemplates;
+  var listOfTemplates = listOfTemplateMocks.map(function(mock){
+    mock.destroy = function () {
+      console.log("Destroying mock");
+      destroyTemplate(this);
+    };
+    return mock;
+  });
   var listOfExampleTemplates = Cambrian.pollApp.exampleTemplates;
   var listOfRecommendedTemplates = Cambrian.pollApp.mockPeerTemplates;
   
@@ -142,6 +157,7 @@ Cambrian.mockJAPI = function(){
         status: "deleted", 
         dateStarted: null,
         options: [],
+        counts: [],
         save: function(){
           savePoll(this);
         },
@@ -168,6 +184,12 @@ Cambrian.mockJAPI = function(){
       }
     };
 
+    var startPoll = function (poll) {
+      poll.dateStarted = new Date();
+      poll.status = "started";
+      return undefined;
+    }
+
     function copyPoll(source){
       //  source might be a poll OR a template 
       // copy all properties from source:
@@ -180,9 +202,11 @@ Cambrian.mockJAPI = function(){
       // override some properties with defaults:
       tmp.id = japi.utils.getUUID;
       tmp.status = "deleted";
-      console.log(source);
-      console.log(tmp);
-      listOfPolls.push(tmp);
+      tmp.save = tmp.save || function(){savePoll(this)};
+      tmp.start = tmp.start || function(){startPoll(this)};
+      tmp.destroy = tmp.destroy || function(){destroyPoll(this)};
+      tmp.counts = tmp.counts || [];
+      //listOfPolls.push(tmp);
       return tmp;
     };
 
@@ -275,7 +299,9 @@ Cambrian.mockJAPI = function(){
         save: function(){
           saveTemplate(this)
         },
-        delete: function(){},
+        destroy: function(){
+          destroyTemplate(this);
+        },
       };
 
     var saveTemplate = function (template) {
