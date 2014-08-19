@@ -9,19 +9,19 @@ Cambrian.JAPI = function(){
   // TypeError: Cannot set property 'bar' of undefined
 
   var japi = {
+    me: {},
     peer: {
       ping: {},
       recommendations: {},
       polls: {},
     },
-    role: {
-      peerList: {},
-    },
-    utils: {
-    },
     polls: {
       templates: {},
     },
+    role: {
+      peerList: {},
+    },
+    utils: {},
   }
 
   /* 
@@ -189,11 +189,11 @@ Cambrian.JAPI = function(){
     return list;
   };
 
-  japi.polls.templates.getExamples = function(){
+  japi.polls.templates.listExamples = function(){
     return [];
   };
 
-  japi.polls.templates.getPeerRecommended = function(){
+  japi.polls.templates.listPeerRecommended = function(){
     return [];
   };
 
