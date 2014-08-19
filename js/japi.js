@@ -9,7 +9,10 @@ Cambrian.JAPI = function(){
   // TypeError: Cannot set property 'bar' of undefined
 
   var japi = {
-    me: {},
+    me: {
+      groups: Cambrian.me.groups || {},
+      peers: Cambrian.me.peers || {},
+    },
     peer: {
       ping: {},
       recommendations: {},
