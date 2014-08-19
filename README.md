@@ -1,4 +1,4 @@
-html5-japi-tests
+japi
 ================
 This repo holds `japi.js` and its associated test suite.
 
@@ -44,23 +44,20 @@ Future work: asynchronous japi, asynchronous japi mocks, asynchronous japi tests
 ## Tests against japi.js
 These tests are written with the Jasmine library.
 
- * [japi.js library] (https://github.com/CambrianExp/html5-japi-tests/tree/master/js/japi.js)
- * [tests against japi.js](https://github.com/CambrianExp/html5-japi-tests/tree/master/js/testJapiJS.js)
- * [mockJapi.js mock object](https://github.com/CambrianExp/html5-japi-tests/tree/master/js/mockJapi.js)
- * [tests against mockJapi.js](https://github.com/CambrianExp/html5-japi-tests/tree/master/js/testMockJapi.js)
+ * [japi.js library] (https://github.com/CambrianExp/japi/tree/master/js/japi.js)
+ * [tests against japi.js](https://github.com/CambrianExp/japi/tree/master/js/testJapiJS.js)
+ * [mockJapi.js mock object](https://github.com/CambrianExp/japi/tree/master/js/mockJapi.js)
+ * [tests against mockJapi.js](https://github.com/CambrianExp/japi/tree/master/js/testMockJapi.js)
 
 ###To run the tests against the mock japi API:  
-Clone the repo `git clone git@github.com:SocietyPro/html5-japi-tests.git`  
-Load `mock.html` in your favorite browser `firefox html5-japi-tests/mock.html`  
+Clone the repo `git clone git@github.com:SocietyPro/japi.git`  
+Load `test/testMock.html` in your favorite browser `firefox japi/test/mock.html`  
 
 ###To run the tests in Cambrian against the real JAPI:  
-Navigate to `~/.Cambrian/App/Ballotmaster`  
-Delete everything in `~/.Cambrian/App/Ballotmaster`  
-Clone the repo `git clone git@github.com:SocietyPro/html5-japi-tests.git`  
-Copy the repo into the Ballotmaster folder  
-Rename or copy `index.html` to `default.htm`  
+Navigate to `~/.Cambrian/Apps`  
+Clone the repo `git clone git@github.com:SocietyPro/japi.git`  
 Start Cambrian  
-Open Tools > Ballotmaster  
+Open Tools > JAPI Tests  
 
 ## Example JAPI Function
 
