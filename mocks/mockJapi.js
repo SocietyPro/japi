@@ -76,17 +76,11 @@ Cambrian.mockJAPI = function(){
    * These functions give apps access to context about the current role
    */
 
-  japi.me.peers = function(){
-    return Cambrian.pollApp.mockTargets.peers;
-  };
+  japi.me.peers = Cambrian.pollApp.mockTargets.peers;
 
-  japi.me.groups = function(){
-    return Cambrian.pollApp.mockTargets.groups;
-  };
+  japi.me.groups = Cambrian.pollApp.mockTargets.groups;
 
-  japi.me.peerLists = function(){
-    return Cambrian.pollApp.mockTargets.peerLists;
-  };
+  japi.me.peerLists = Cambrian.pollApp.mockTargets.peerLists;
 
   /* 
    * JAPI PEER API
