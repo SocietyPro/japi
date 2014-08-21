@@ -1,5 +1,360 @@
 var Cambrian = Cambrian || {isMockCambrian:true}
 
+/* MOCK DATA HERE */
+/* MOCK JAPI CALLS BELOW */
+
+Cambrian.pollApp = Cambrian.pollApp || {};
+
+Cambrian.pollApp.mockPolls = [
+  { 
+    id: "UUID1",
+    type: "Battle Ping",
+    title: "Join Operation Red Dawn!",
+    description: "We are going to burn the Russian Starbase. Scythe/Moa fleet is leaving at 21:00 from V-3.", 
+    status: "started",
+    dateStarted: new Date("2014-07-18"),
+    dateStopped: null,
+    stats: {
+        sent: 100,
+        responded: 82,
+        pending: 18,
+        invalid: 0
+    },
+    turnoutPercent: "82",
+    options: [{text: "I'll be there"}, {text: "I can't go"}],
+    comments: [
+        ["darlith", "I will be 10 minutes late.", new Date("2014-07-18")],
+        ["frankenlaser", "This better pay off, last 3 deals with you were bum.", new Date("2014-07-18")],
+        ["susan", "should I bring the backup fission reactor?", new Date("2014-07-18")],
+        ["chewy", "send me 1 BTC off the recrod in this dialog and I will join up with my entire crew.", new Date("2014-07-18")],
+    ],
+    counts: [42, 40],
+  },
+  { 
+    id: "UUID2",
+    type: "Poll",
+    title: "What is your favorite Snack?",
+    description: "We are about to restock the vending machine and want to know what y'all want in it.",
+    status: "started",
+    dateStarted: new Date("2014-07-15"),
+    dateStopped: null,
+    stats: {
+        sent: 1000,
+        responded: 950,
+        pending: 50,
+        invalid: 50
+    },
+    options: [{text: "Tortrix BBQ"}, {text: "Tortrix Crema Agria"}, {text: "Lays BBQ"}, {text: "Lays Original"}],
+    comments: [],
+    counts: [100, 630, 100, 120],
+  },
+  { 
+    id: "UUID3",
+    type: "Vote",
+    title: "Leonardo di Cambrian for President of the Organization",
+    description: "Vote for me, I promise I won't do anything evil.",
+    status: "complete",
+    dateStarted: new Date("2014-07-14"),
+    dateStopped: new Date("2014-07-15"),
+    stats: {
+        sent: 100,
+        responded: 90,
+        pending: 10,
+        invalid: 0
+    },
+    options: [{text: "Vote Yes"}, {text: "Vote No"}],
+    comments: [],
+    counts: [50, 40],
+  },
+  { 
+    id: "UUID4",
+    type: "LocalTrader",
+    title: "I have 2 BTC to sell immediately. Takers?",
+    description: "bitstamp +5%",
+    status: "unstarted",
+    dateStarted: null,
+    dateStopped: null,
+    stats: {
+        sent: 0,
+        responded: 0,
+        pending: 0,
+        invalid: 0
+    },
+    options: [{text: "Yes, I'll buy BTC now"}],
+    comments: [],
+    counts: [0],
+  },
+  { 
+    id: "UUID5",
+    type: "Community",
+    title: "Swarm protest at 1pm. Can you join?",
+    description: "Location and slogans are opsec, we'll tell you if you commit to joining.",
+    status: "unstarted",
+    dateStarted: null,
+    dateStopped: null,
+    stats: {
+        sent: 0,
+        responded: 0,
+        pending: 0,
+        invalid: 0
+    },
+    options: [{text: "Yes, I can join"}, {text: "Yes, I can join and bring my megaphone"}, {text: "No, but good luck!"}, {text: "No way. Swarm Rules!"}],
+    comments: [],
+    counts: [0],
+  },
+];
+
+
+Cambrian.pollApp.mockTargets = {
+  peers: [
+    {
+      id: "UID001",
+      name: "plato",
+    },
+    {
+      id: "UID002",
+      name: "voodoo",
+    },
+    {
+      id: "UID003",
+      name: "hiro",
+    }
+  ],
+
+  groups: [
+    {
+      id: "GID001",
+      name: "Cambrian Devs",
+      peers: [
+        {
+          id: "UID001",
+          name: "plato",
+        },
+        {
+          id: "UID002",
+          name: "hiro",
+        }
+      ],
+    },
+    {
+      id: "GID002",
+      name: "Cambrian Sprouts",
+      peers: [
+        {
+          id: "UID003",
+          name: "paulo",
+        },
+        {
+          id: "UID004",
+          name: "future dev",
+        }
+      ],
+    },
+  ],
+
+  peerLists: [
+    {
+      id: "LID001",
+      name: "My Marketing List",
+      peers: [
+        {
+          id: "UID001",
+          name: "plato",
+        },
+        {
+          id: "UID002",
+          name: "hiro",
+        }
+      ],
+    },
+    {
+      id: "LID002",
+      name: "People I know with cars",
+      peers: [
+        {
+          id: "UID003",
+          name: "paulo",
+        },
+        {
+          id: "UID004",
+          name: "future dev",
+        }
+      ],
+    },
+    {
+      id: "LID003",
+      name: "My Enemies",
+      peers: [
+        {
+          id: "UID003",
+          name: "paulo",
+        },
+        {
+          id: "UID004",
+          name: "future dev",
+        }
+      ],
+    },
+  ]
+};
+
+
+Cambrian.pollApp.mockTemplates = [
+  { 
+    id: "UUID101",
+    type: "Battle Ping",
+    title: "Join Operation Red Dawn! Bring Ships!",
+    description: "We are going to burn the Russian Starbase. Scythe/Moa fleet is leaving at 21:00 from V-3.",
+    options: [{text: "I'll be there"}, {text: "I can't go"}],
+    allowMultipleChoices: false,
+    allowComments: false,
+    dismissText: "Dismiss",
+    submitText: "Submit",
+  },
+  { 
+    id: "UUID102",
+    type: "Poll",
+    title: "What is your favorite Snack?",
+    description: "We are about to restock the vending machine and want to know what y'all want in it.",
+    options: [{text: "Tortrix BBQ"}, {text: "Tortrix Crema Agria"}, {text: "Lays BBQ"}, {text: "Lays Original"}],
+    allowMultipleChoices: false,
+    allowComments: false,
+    dismissText: "Dismiss",
+    submitText: "Submit",
+  },
+  { 
+    id: "UUID103",
+    type: "Vote",
+    title: "Leonardo di Cambrian for President of the Organization",
+    description: "Vote for me, I promise I won't do anything evil.",
+    options: [{text: "Vote Yes"}, {text: "Vote No"}],
+    allowMultipleChoices: false,
+    allowComments: false,
+    dismissText: "Dismiss",
+    submitText: "Submit",
+  },
+  { 
+    id: "UUID104",
+    type: "LocalTrader",
+    title: "I have 2 BTC to sell immediately. Takers?",
+    description: "bitstamp +5%",
+    options: [{text: "Yes, I'll buy BTC now"}],
+    allowMultipleChoices: false,
+    allowComments: false,
+    dismissText: "Dismiss",
+    submitText: "Submit",
+  },
+  { 
+    id: "UUID105",
+    type: "Community",
+    title: "Swarm protest at 1pm. Can you join?",
+    description: "Location and slogans are opsec, we'll tell you if you commit to joining.",
+    options: [{text: "Yes, I can join"}, {text: "Yes, I can join and bring my megaphone"}, {text: "No, but good luck!"}, {text: "No way. Swarm Rules!"}],
+    allowMultipleChoices: false,
+    allowComments: false,
+    dismissText: "Dismiss",
+    submitText: "Submit",
+  },
+];
+
+Cambrian.pollApp.exampleTemplates = [
+  { 
+    id: "UUID201",
+    type: "Battle Ping",
+    title: "Join Operation Red Dawn! Bring Ships!",
+    description: "We are going to burn the Russian Starbase. Scythe/Moa fleet is leaving at 21:00 from V-3.",
+    options: [{text: "I'll be there"}, {text: "I can't go"}],
+    allowMultipleChoices: false,
+    allowComments: false,
+    dismissText: "Dismiss",
+    submitText: "Submit",
+  },
+  { 
+    id: "UUID202",
+    type: "Vote",
+    title: "President of the Organization",
+    description: "Who should be made President for Life?",
+    options: [{text: "Voodoo"}, {text: "Hiro"}, {text: "Plato"}, {text: "Rafael"}, {text: "Dan"}, {text: "Ceasar"}],
+    allowMultipleChoices: false,
+    allowComments: false,
+    dismissText: "Dismiss",
+    submitText: "Submit",
+  },
+  { 
+    id: "UUID203",
+    type: "Poll",
+    title: "What should we call the new product geared toward developer teams?",
+    description: "We need a snappy name for the new time management tool.",
+    options: [{text: "The Whippenator"}, {text: "Iron Maiden"}, {text: "The Rack"}],
+    allowMultipleChoices: false,
+    allowComments: false,
+    dismissText: "Dismiss",
+    submitText: "Submit",
+  },
+  { 
+    id: "UUID204",
+    type: "Opinion",
+    title: "Does Gavin have the skills and vision to lead the developer team?",
+    description: "Well, does he?",
+    options: [{text: "Yes"}, {text: "no"}],
+    allowMultipleChoices: false,
+    allowComments: false,
+    dismissText: "Dismiss",
+    submitText: "Submit",
+  },
+  { 
+    id: "UUID205",
+    type: "Help",
+    title: "Can someone please help me install the latest version of the software?",
+    description: "I keep getting missing dependencies errors.",
+    options: [{text: "Yes, I can help the noob"}],
+    allowMultipleChoices: false,
+    allowComments: false,
+    dismissText: "Dismiss",
+    submitText: "Submit",
+  },
+  { 
+    id: "UUID206",
+    type: "Emergency",
+    title: "Tsunami has subsided. Who can help bring these supplies?",
+    description: "We need supplies from your warehouses at the rally point.",
+    options: [{text: "I can bring water (# pallets in comments)"}, {text: "I can bring blankets (# comments)"}, {text: "I can bring batteries (#/types in comments)"}, {text: "I can bring MREs (# pallets in comments)"}],
+    allowMultipleChoices: true,
+    allowComments: true,
+    dismissText: "Dismiss",
+    submitText: "Submit",
+  },
+];
+
+Cambrian.pollApp.mockPeerTemplates = [
+  { 
+    id: "UUID301",
+    type: "Opinion",
+    title: "Can the Product Owner keep up?",
+    description: "We are burning through the backlog. Will there be enough work backlogged?",
+    options: [{text: "Yes, he'll add make-work stories."}, {text: "Yes, he'll quit playing 'Software Tycoon' and get to work."}, {text: "No."}],
+    allowMultipleChoices: false,
+    allowComments: false,
+    dismissText: "Dismiss",
+    submitText: "Submit",
+  },
+  { 
+    id: "UUID302",
+    type: "Vote",
+    title: "President of the Organization",
+    description: "Who should be made President for Life?",
+    options: [{text: "Voodoo"}, {text: "Hiro"}, {text: "Plato"}, {text: "Rafael"}, {text: "Dan"}, {text: "Ceasar"}],
+    allowMultipleChoices: false,
+    allowComments: false,
+    dismissText: "Dismiss",
+    submitText: "Submit",
+  },
+];
+
+
+
+/* Mock JAPI calls below here */
+
 Cambrian.idSeed = 0;
 
 Cambrian.mockJAPI = function(){
