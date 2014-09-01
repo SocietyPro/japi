@@ -2,7 +2,14 @@ nav {
   position: fixed;
   top: 10px;
   left: 10px;
+  height: 32px;
+  width: 100%;
+  background-color: white;
 }
+body div{
+  margin-top: 40px;
+}
+/*
 .container{
   margin-top: 40px;
 }
@@ -49,3 +56,4 @@ nav {
 	clear: both;
 }
 
+*/
