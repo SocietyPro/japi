@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+      body {
+        background-color: #ffffff;
+      }
+      nav {
+        margin-bottom: 8px;
+        background-color: #eeeeee;
+      }
+      nav span{ 
+        width: 15em; 
+        background-color: #cccccc;
+        margin: 8px;
+        display: inline-block;
+      }
+      .hidden{ 
+        display: none; 
+      }
+    </style>
+    <script type="text/javascript">
+      function loadTab(n){
+        document.getElementById('content1').classList.add('hidden');
+        document.getElementById('content2').classList.add('hidden');
+        document.getElementById('content3').classList.add('hidden');
+
+        var id = "content"+n;
+        document.getElementById(id).classList.remove('hidden');
+      };
+    </script>
+  </head>
+  <body>
+    <nav id="chooseTest">
+      <span id="tab1" onclick="loadTab(1)">Jasmine (vs japi)</span>
+      <span id="tab2" onclick="loadTab(2)">Jasmine (vs mocks)</span>
+      <span id="tab3" onclick="loadTab(3)">Non-Jasmine tests</span>
+    </nav>
+    <iframe id="content1" src="test/test.html"></iframe>
+    <iframe id="content2" src="test/testMocks.html"></iframe>
+    <iframe id="content3" src="test/non-jasmine/index.html"></iframe>
+  </body>
+</html>
