@@ -549,7 +549,7 @@ Cambrian.mockJAPI = function(){
         };
       };
       // override some properties with defaults:
-      tmp.id = japi.utils.getUUID;
+      tmp.id = japi.utils.getUUID();
       tmp.status = "deleted";
       tmp.save = tmp.save || function(){savePoll(this)};
       tmp.start = tmp.start || function(){startPoll(this)};
@@ -674,7 +674,7 @@ Cambrian.mockJAPI = function(){
         };
       };
       // override some properties with defaults:
-      tmp.id = japi.utils.getUUID;
+      tmp.id = japi.utils.getUUID();
       listOfTemplates.push(tmp);
       return tmp;
     };
