@@ -1,6 +1,9 @@
-if(Cambrian === undefined || Cambrian.isMockCambrian === true){
+if(Cambrian === undefined){
   throw("japi.js needs a root object Cambrian.")
 };
+if(Cambrian.isMockCambrian === true){
+  throw("Mocks detected; japi.js aborting")
+}
 var Cambrian = Cambrian || {}
 Cambrian.JAPI = function(){
   // Define some children objects, this is necessary because trying to set
@@ -10,10 +13,7 @@ Cambrian.JAPI = function(){
 
   var japi = {
     apps: Cambrian.apps || {},
-    me: {
-      groups: Cambrian.me.groups || {},
-      peers: Cambrian.me.peers || {},
-    },
+    me: Cambrian.me,
     peer: {
       ping: {},
       recommendations: {},
