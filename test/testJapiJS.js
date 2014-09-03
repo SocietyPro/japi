@@ -73,6 +73,50 @@ describe("japi.js", function(){
       });
     });
 
+    describe(".peerLists", function(){
+      it("exists", function(){
+        expect(japi.me.peerLists).toBeDefined();
+      });
+
+      it("is not a method", function(){
+        expect(typeof japi.me.peerLists).not.toEqual("function");
+      });
+
+      it("is an array", function(){
+        expect(typeof japi.me.peerLists.length).toEqual("number");
+        expect(typeof japi.me.peerLists).toEqual("object");
+        expect(japi.me.peerLists.push).toBeDefined();
+      });
+
+      xit("contains peerList objects", function(){
+        // peerList objects not specced
+      });
+    });
+
+    var myPL;
+    describe(".newPeerList()", function(){
+      it("creates a peerList", function(){
+        myPL = japi.me.newPeerList();
+        expect(myPL).toBeDefined;
+      });
+      it("has a string id", function(){
+        expect(myPL.id).toBeDefined;
+        expect(typeof myPL.id).toEqual("string");
+      });
+      it("has a string name", function(){
+        expect(myPL.name).toBeDefined;
+        expect(typeof myPL.name).toEqual("string");
+      });
+      it("has a .destroy method", function(){
+        expect(myPL.destroy).toBeDefined();
+        expect(typeof myPL.destroy).toEqual("function");
+      });
+      it("is destroyed when .destroy() is called", function(){
+        myPL.destroy();
+        expect(japi.me.peerLists.indexOf(myPL)).toBe(-1);
+      });
+    });
+
   });
 
 
