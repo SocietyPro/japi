@@ -1,0 +1,48 @@
+<html ng-app="myApp">
+<head>
+	<title>Page 3</title>
+	<link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	<style type="text/css">
+	#ApiTestController {
+		border: 1px solid #888;
+		background: #FEF;
+		padding: 30px;
+	}
+	ul li {
+		padding: 0px;
+	}
+	</style>
+</head>
+<body class="container">
+	<h1>Non jasmine testing / page 4</h1>
+	
+	<p><a href="index.html" >Go index</a></p>
+	<p><a href="../test.html" >Jasmine tests</a></p>
+
+	<h4>Angular tests</h4>
+	<div ng-controller="ApiTestController" id="ApiTestController">
+		<p>{{greeting}}</p>
+
+		<strong>Groups</strong>
+		<ul>
+			<li ng-repeat="group in Cambrian.me.groups">{{group.name}}</li>
+		</ul>
+
+		<strong>Roles</strong>
+		<ul>
+			<li ng-repeat="role in Cambrian.capi.roles.list()">{{role.name}}</li>
+		</ul>
+
+		<string>chores</strong>
+		<ul>
+			<li ng-repeat="chore in chores.list">{{chore}}</li>
+		</ul>			
+
+		<button ng-click="Add()">Add via angular</button>
+		<button onclick="Add()">Add via normal js</button>
+	</div>
+	
+</body>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular.min.js"></script>
+<script src="page4.js" type="text/javascript"></script>
+</html>
