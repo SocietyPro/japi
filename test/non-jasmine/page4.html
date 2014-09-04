@@ -28,18 +28,40 @@
 			<li ng-repeat="group in Cambrian.me.groups">{{group.name}}</li>
 		</ul>
 
-		<strong>Roles</strong>
-		<ul>
-			<li ng-repeat="role in Cambrian.capi.roles.list()">{{role.name}}</li>
-		</ul>
-
-		<string>chores</strong>
+		<strong>Data binding test</strong>
 		<ul>
 			<li ng-repeat="chore in chores.list">{{chore}}</li>
 		</ul>			
 
 		<button ng-click="Add()">Add via angular</button>
 		<button onclick="Add()">Add via normal js</button>
+
+
+		<br/>
+		<br/>
+		<strong>Roles tests (total roles = {{Cambrian.capi.roles.list().length}} )</strong>
+		<ul>
+			<li ng-repeat="role in Cambrian.capi.roles.list()">
+				<button ng-click="Cambrian.capi.roles.current = role;">roles.current = </button>
+				<strong> [ {{role.name}} ] </strong>
+			</li>
+			<li>
+				<button ng-click="Cambrian.capi.roles.current = undefined;">roles.current = </button>
+				undefined
+			</li>
+			<li>
+				<button ng-click="Cambrian.capi.roles.current = null;">roles.current = </button>
+				null
+			</li>
+			<li>
+				<button ng-click="Cambrian.capi.roles.current = 'a string';">roles.current = </button>
+				"a string"
+			</li>
+			<li>
+				<button ng-click="Cambrian.capi.roles.current = Cambrian.me.groups[0];">roles.current = </button>
+				oGroup [ {{Cambrian.me.groups[0].name}} ]
+			</li>
+		</ul>
 	</div>
 	
 </body>
