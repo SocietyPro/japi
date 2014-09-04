@@ -21,14 +21,13 @@ Cambrian.pollApp.mockPolls = [
         invalid: 0
     },
     turnoutPercent: "82",
-    options: [{text: "I'll be there"}, {text: "I can't go"}],
+    options: [{text: "I'll be there", count: 42}, {text: "I can't go", count: 40}],
     comments: [
         ["darlith", "I will be 10 minutes late.", new Date("2014-07-18")],
         ["frankenlaser", "This better pay off, last 3 deals with you were bum.", new Date("2014-07-18")],
         ["susan", "should I bring the backup fission reactor?", new Date("2014-07-18")],
         ["chewy", "send me 1 BTC off the recrod in this dialog and I will join up with my entire crew.", new Date("2014-07-18")],
-    ],
-    counts: [42, 40],
+    ]
   },
   { 
     id: "UUID2",
@@ -44,9 +43,8 @@ Cambrian.pollApp.mockPolls = [
         pending: 50,
         invalid: 50
     },
-    options: [{text: "Tortrix BBQ"}, {text: "Tortrix Crema Agria"}, {text: "Lays BBQ"}, {text: "Lays Original"}],
-    comments: [],
-    counts: [100, 630, 100, 120],
+    options: [{text: "Tortrix BBQ", count: 100}, {text: "Tortrix Crema Agria", count: 630}, {text: "Lays BBQ", count: 100}, {text: "Lays Original", count: 120}],
+    comments: []
   },
   { 
     id: "UUID3",
@@ -62,9 +60,8 @@ Cambrian.pollApp.mockPolls = [
         pending: 10,
         invalid: 0
     },
-    options: [{text: "Vote Yes"}, {text: "Vote No"}],
-    comments: [],
-    counts: [50, 40],
+    options: [{text: "Vote Yes", count: 50}, {text: "Vote No", count: 40}],
+    comments: []
   },
   { 
     id: "UUID4",
@@ -80,7 +77,7 @@ Cambrian.pollApp.mockPolls = [
         pending: 0,
         invalid: 0
     },
-    options: [{text: "Yes, I'll buy BTC now"}],
+    options: [{text: "Yes, I'll buy BTC now", count: 0}],
     comments: [],
     counts: [0],
   },
@@ -98,9 +95,8 @@ Cambrian.pollApp.mockPolls = [
         pending: 0,
         invalid: 0
     },
-    options: [{text: "Yes, I can join"}, {text: "Yes, I can join and bring my megaphone"}, {text: "No, but good luck!"}, {text: "No way. Swarm Rules!"}],
-    comments: [],
-    counts: [0],
+    options: [{text: "Yes, I can join", count: 0}, {text: "Yes, I can join and bring my megaphone", count: 0}, {text: "No, but good luck!", count: 0}, {text: "No way. Swarm Rules!", count: 0}],
+    comments: []
   },
 ];
 
@@ -355,7 +351,7 @@ Cambrian.pollApp.mockPeerTemplates = [
 
 /* Mock JAPI calls below here */
 
-Cambrian.idSeed = 0;
+Cambrian.idSeed = 1000;
 
 Cambrian.mockJAPI = function(){
   // Define some children objects, this is necessary because trying to set
@@ -381,6 +377,30 @@ Cambrian.mockJAPI = function(){
       myTemplates: {},
     },
   }
+  
+  /*
+   * JAPI UTILS API
+   * japi.utils is a collection of functions available without any permissions.
+   * It includes only functions that don't manipulate data owned by a role.
+   * Those functions are instead in japi.role
+   */
+
+  japi.utils.getUUID = function(){
+    Cambrian.idSeed++;
+    return "UUID" + Cambrian.idSeed.toString();
+  };
+
+  var savePoll = function (poll) {
+    poll.status = "unstarted";
+    for (var i = 0; i < listOfPolls.length; i++) {
+      if (listOfPolls[i].id === poll.id) {
+        listOfPolls[i] = poll;
+        return undefined;
+      };
+    }
+    listOfPolls.push(poll);
+    return undefined;
+  };
 
   var destroyPoll = function (poll) {
     var index = listOfPolls.indexOf(poll);
@@ -395,6 +415,11 @@ Cambrian.mockJAPI = function(){
    */
   var listOfPollMocks = Cambrian.pollApp.mockPolls;
   var listOfPolls = listOfPollMocks.map(function(mock){
+    mock.id = japi.utils.getUUID();
+    mock.save = function () {
+      console.log('Saving mock');
+      savePoll(this);
+    };
     mock.destroy = function () {
       console.log('Destroying mock');
       destroyPoll(this);
@@ -477,20 +502,6 @@ Cambrian.mockJAPI = function(){
     //setTimeout(function(){ callback(null, false) }, 200);
     return true;
   };
-  
-  /*
-   * JAPI UTILS API
-   * japi.utils is a collection of functions available without any permissions.
-   * It includes only functions that don't manipulate data owned by a role.
-   * Those functions are instead in japi.role
-   */
-
-  japi.utils.getUUID = function(){
-    Cambrian.idSeed++;
-    return "UUID" + Cambrian.idSeed.toString();
-  };
-
-
 
   /*
    * JAPI POLLS API
@@ -523,14 +534,15 @@ Cambrian.mockJAPI = function(){
       };
 
     var savePoll = function (poll) {
+      poll.status = "unstarted";
       for (var i = 0; i < listOfPolls.length; i++) {
         if (listOfPolls[i].id === poll.id) {
           listOfPolls[i] = poll;
           return undefined;
         };
-        listOfPolls.push(poll);
-        return undefined;
       }
+      listOfPolls.push(poll);
+      return undefined;
     };
 
     var startPoll = function (poll) {
