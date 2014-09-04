@@ -24,12 +24,14 @@ describe("japi.js", function(){
     };
     expect(shouldThrow).toThrow();
   });
-  describe("japi.groups, function() {
+
+  describe("japi.groups", function() {
     it("exists",function(){
       expect(japi.groups).not.toEqual({});
       expect(japi.groups).toBeDefined();
     });
   });
+
   describe("japi.me", function(){
     it("exists", function(){
       expect(japi.me).not.toEqual({});
