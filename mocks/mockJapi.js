@@ -60,7 +60,7 @@ Cambrian.pollApp.mockPolls = [
         pending: 10,
         invalid: 0
     },
-    options: [{text: "Vote Yes", count: 50}, {text: "Vote No", count: 40}],
+    options: [{text: "Vote Yes", count: 50}, {text: "Vote No", count: 40}, {text: "This is an option that nobody has voted on because nobody will see it. It's just a really long line of text.", count: 0}],
     comments: []
   },
   { 
@@ -514,7 +514,7 @@ Cambrian.mockJAPI = function(){
     var mockPoll = {
         id: japi.utils.getUUID(), 
         title: "",
-        status: "deleted", 
+        status: "unsaved", 
         dateStarted: null,
         options: [],
         counts: [],
@@ -562,7 +562,7 @@ Cambrian.mockJAPI = function(){
       };
       // override some properties with defaults:
       tmp.id = japi.utils.getUUID();
-      tmp.status = "deleted";
+      tmp.status = "unsaved";
       tmp.save = tmp.save || function(){savePoll(this)};
       tmp.start = tmp.start || function(){startPoll(this)};
       tmp.destroy = tmp.destroy || function(){destroyPoll(this)};
