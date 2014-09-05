@@ -24,6 +24,10 @@ myApp.controller('ApiTestController', ['$scope', function($scope) {
     $scope.Add = function() {
     	$scope.chores.list.push("NaNgular " + (new Date())  );
     }
+    $scope.Reload = function() {
+    	console.log("refresh()");
+    	$scope.greeting = new Date();
+    }
 
 }]);
 
