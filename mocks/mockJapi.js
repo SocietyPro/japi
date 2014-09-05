@@ -78,8 +78,7 @@ Cambrian.pollApp.mockPolls = [
         invalid: 0
     },
     options: [{text: "Yes, I'll buy BTC now", count: 0}],
-    comments: [],
-    counts: [0],
+    comments: []
   },
   { 
     id: "UUID5",
@@ -517,7 +516,6 @@ Cambrian.mockJAPI = function(){
         status: "unsaved", 
         dateStarted: null,
         options: [],
-        counts: [],
         save: function(){
           savePoll(this);
         },
@@ -566,7 +564,6 @@ Cambrian.mockJAPI = function(){
       tmp.save = tmp.save || function(){savePoll(this)};
       tmp.start = tmp.start || function(){startPoll(this)};
       tmp.destroy = tmp.destroy || function(){destroyPoll(this)};
-      tmp.counts = tmp.counts || [];
       //listOfPolls.push(tmp);
       return tmp;
     };
