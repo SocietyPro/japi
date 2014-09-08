@@ -30,6 +30,123 @@ describe("japi.js", function(){
       expect(japi.groups).not.toEqual({});
       expect(japi.groups).toBeDefined();
     });
+    describe("japi.groups.list()",function() {
+      it("exists",function(){
+        expect(japi.groups.list).not.toEqual({});
+        expect(japi.groups.list).toBeDefined();
+      });
+      it("is a method", function() {
+            expect(typeof japi.groups.list).toEqual("function");
+      });
+    });
+
+    describe("japi.groups.build()",function() {
+      it("exists",function(){
+        expect(japi.groups.build).not.toEqual({});
+        expect(japi.groups.build).toBeDefined();
+
+      });
+      it("is a method", function() {
+            expect(typeof japi.groups.build).toEqual("function");
+       });
+    });
+
+      describe("japi.groups.get()",function(){
+        it("exists",function(){
+          expect(japi.groups.get).not.toEqual({});
+          expect(japi.groups.get).toBeDefined();
+        });
+        it("is a method", function() {
+              expect(typeof japi.groups.get).toEqual("function");
+          });
+      });
+
+
+     describe("japi.group instance objects", function(){
+         describe("japi.groups.id",function(){
+             it("exists",function(){
+                 expect(japi.groups.id).not.toEqual({});
+                 expect(japi.groups.id).toBeDefined();
+             });
+             it("is a string", function() {
+                 expect(typeof japi.groups.id).toEqual("string");
+             });
+         });
+
+         describe("japi.groups.name",function(){
+             it("exists",function(){
+                 expect(japi.groups.name).not.toEqual({});
+                 expect(japi.groups.name).toBeDefined();
+             });
+             it("is a string", function() {
+                 expect(typeof japi.groups.name).toEqual("string");
+             });
+         });
+
+         describe("japi.groups.type",function(){
+             it("exists",function(){
+                 expect(japi.groups.type).not.toEqual({});
+                 expect(japi.groups.type).toBeDefined();
+             });
+             it("is a string", function() {
+                 expect(typeof japi.groups.type).toEqual("string");
+             });
+         });
+
+         describe("japi.groups.count",function(){
+             it("exists",function(){
+                 expect(japi.groups.count).not.toEqual({});
+                 expect(japi.groups.count).toBeDefined();
+             });
+             it("is a number", function() {
+                 expect(typeof japi.groups.type).toEqual("number");
+             });
+         });
+
+         describe("japi.groups.members[]",function(){
+             it("exists",function(){
+                 expect(japi.groups.members).not.toEqual({});
+                 expect(japi.groups.members).toBeDefined();
+             });
+             it("is a array", function() {
+                 expect(typeof japi.groups.members.length).toEqual("number");
+                 expect(typeof japi.groups.members).toEqual("object");
+             });
+         });
+
+         describe("japi.groups.addPeer()",function(){
+             it("exists",function(){
+                 expect(japi.groups.addPeer).not.toEqual({});
+                 expect(japi.groups.addPeer).toBeDefined();
+             });
+             it("is a method", function() {
+                 expect(typeof japi.groups.addPeer).toEqual("function");
+             });
+         });
+         describe("japi.groups.removePeer()",function(){
+             it("exists",function(){
+                 expect(japi.groups.removePeer).not.toEqual({});
+                 expect(japi.groups.removePeer).toBeDefined();
+             });
+             it("is a method", function() {
+                 expect(typeof japi.groups.removePeer).toEqual("function");
+             });
+         });
+
+         describe("japi.groups.save()",function(){
+             it("exists",function(){
+                 expect(japi.groups.save).not.toEqual({});
+                 expect(japi.groups.save).toBeDefined();
+             });
+             it("is a method", function() {
+                 expect(typeof japi.groups.save).toEqual("function");
+             });
+         });
+
+
+     });
+
+
   });
 
   describe("japi.me", function(){
