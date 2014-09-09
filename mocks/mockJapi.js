@@ -359,6 +359,8 @@ Cambrian.mockJAPI = function(){
   // TypeError: Cannot set property 'bar' of undefined
 
   var japi = {
+    groups: {
+    },
     me: {
     },
     peer: {
@@ -409,7 +411,7 @@ Cambrian.mockJAPI = function(){
     }
   };
 
-  /* Our mocks don't have a start or delete function but we need it for testing. Adding
+  /* Our mock polls don't have a start or delete function but we need it for testing. Adding
    * here:
    */
   var listOfPollMocks = Cambrian.pollApp.mockPolls;
@@ -450,6 +452,31 @@ Cambrian.mockJAPI = function(){
   var listOfExampleTemplates = Cambrian.pollApp.exampleTemplates;
   var listOfRecommendedTemplates = Cambrian.pollApp.mockPeerTemplates;
   
+  /* 
+   * JAPI GROUP API
+   * These functions provide group administration functions
+   */
+
+  japi.groups.build = function(src){
+    var newGroup = {
+      name: '',
+      type: ''
+      members: [],
+      save: function(){
+        console.log("Group saved");
+      },
+      destroy: function(){
+        console.log("Group destroyed");
+      }
+    };
+
+    if(typeof src === string){
+      newGroup.type = src;
+    };
+    
+    return newGroup;
+  }
+
   /* 
    * JAPI ME API
    * These functions give apps access to context about the current role
