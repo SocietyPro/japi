@@ -460,7 +460,7 @@ Cambrian.mockJAPI = function(){
   japi.groups.build = function(src){
     var newGroup = {
       name: '',
-      type: ''
+      type: '',
       members: [],
       save: function(){
         console.log("Group saved");
