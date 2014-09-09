@@ -470,7 +470,7 @@ Cambrian.mockJAPI = function(){
       }
     };
 
-    if(typeof src === string){
+    if(typeof src === 'string'){
       newGroup.type = src;
     };
     
