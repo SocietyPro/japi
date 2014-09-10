@@ -461,13 +461,28 @@ Cambrian.mockJAPI = function(){
     var newGroup = {
       name: '',
       type: '',
-      members: [],
+      members: [Cambrian.pollApp.mockTargets.peers],
       save: function(){
         console.log("Group saved");
       },
       destroy: function(){
         console.log("Group destroyed");
-      }
+      },
+      addPeer: function(peer){
+        this.members.push(peer);
+      },
+      removePeer: function(peer){
+        var index = this.members.indexOf(peer);
+        var found = (  index == -1 )
+          ? false : true;
+          
+        if(found){
+          var newMembers = [];
+          newMembers.push(this.members.slice(0, index));
+          newMembers.push(this.members.slice(index+1));
+          this.members = newMembers;
+        }
+      },
     };
 
     if(typeof src === 'string'){
