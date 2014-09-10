@@ -8,6 +8,7 @@ Cambrian.pollApp = Cambrian.pollApp || {};
 Cambrian.pollApp.mockPolls = [
   { 
     id: "UUID1",
+    originator: "user1@xmpp.societypro.org",
     type: "Battle Ping",
     title: "Join Operation Red Dawn!",
     description: "We are going to burn the Russian Starbase. Scythe/Moa fleet is leaving at 21:00 from V-3.", 
@@ -21,6 +22,7 @@ Cambrian.pollApp.mockPolls = [
         invalid: 0
     },
     turnoutPercent: "82",
+    allowComments: true,
     options: [{text: "I'll be there", count: 42}, {text: "I can't go", count: 40}],
     comments: [
         ["darlith", "I will be 10 minutes late.", new Date("2014-07-18")],
@@ -31,6 +33,7 @@ Cambrian.pollApp.mockPolls = [
   },
   { 
     id: "UUID2",
+    originator: "user2@xmpp.societypro.org",
     type: "Poll",
     title: "What is your favorite Snack?",
     description: "We are about to restock the vending machine and want to know what y'all want in it.",
@@ -43,11 +46,13 @@ Cambrian.pollApp.mockPolls = [
         pending: 50,
         invalid: 50
     },
+    allowComments: false,
     options: [{text: "Tortrix BBQ", count: 100}, {text: "Tortrix Crema Agria", count: 630}, {text: "Lays BBQ", count: 100}, {text: "Lays Original", count: 120}],
     comments: []
   },
   { 
     id: "UUID3",
+    originator: "user3@xmpp.societypro.org",
     type: "Vote",
     title: "Leonardo di Cambrian for President of the Organization",
     description: "Vote for me, I promise I won't do anything evil.",
@@ -60,11 +65,13 @@ Cambrian.pollApp.mockPolls = [
         pending: 10,
         invalid: 0
     },
+    allowComments: false,
     options: [{text: "Vote Yes", count: 50}, {text: "Vote No", count: 40}, {text: "This is an option that nobody has voted on because nobody will see it. It's just a really long line of text.", count: 0}],
     comments: []
   },
   { 
     id: "UUID4",
+    originator: "user4@xmpp.societypro.org",
     type: "LocalTrader",
     title: "I have 2 BTC to sell immediately. Takers?",
     description: "bitstamp +5%",
@@ -77,11 +84,13 @@ Cambrian.pollApp.mockPolls = [
         pending: 0,
         invalid: 0
     },
+    allowComments: false,
     options: [{text: "Yes, I'll buy BTC now", count: 0}],
     comments: []
   },
   { 
     id: "UUID5",
+    originator: "user5@xmpp.societypro.org",
     type: "Community",
     title: "Swarm protest at 1pm. Can you join?",
     description: "Location and slogans are opsec, we'll tell you if you commit to joining.",
@@ -94,6 +103,7 @@ Cambrian.pollApp.mockPolls = [
         pending: 0,
         invalid: 0
     },
+    allowComments: false,
     options: [{text: "Yes, I can join", count: 0}, {text: "Yes, I can join and bring my megaphone", count: 0}, {text: "No, but good luck!", count: 0}, {text: "No way. Swarm Rules!", count: 0}],
     comments: []
   },
@@ -359,6 +369,8 @@ Cambrian.mockJAPI = function(){
   // TypeError: Cannot set property 'bar' of undefined
 
   var japi = {
+    groups: {
+    },
     me: {
     },
     peer: {
@@ -409,11 +421,20 @@ Cambrian.mockJAPI = function(){
     }
   };
 
-  /* Our mocks don't have a start or delete function but we need it for testing. Adding
+  /* Our mock polls don't have a start or delete function but we need it for testing. Adding
    * here:
    */
+  var d = new Date();
+  var futureDate = d.setDate(d.getDate() + 2);
+  var pastDate = d.setDate(d.getDate() - 2);
   var listOfPollMocks = Cambrian.pollApp.mockPolls;
   var listOfPolls = listOfPollMocks.map(function(mock){
+    mock.endTime = "12:00";
+    if (mock.status === 'started') {
+      mock.endDate = new Date(futureDate);
+    } else if (mock.status === 'complete') {
+      mock.endDate = new Date(pastDate);
+    };
     mock.id = japi.utils.getUUID();
     mock.save = function () {
       console.log('Saving mock');
@@ -450,6 +471,31 @@ Cambrian.mockJAPI = function(){
   var listOfExampleTemplates = Cambrian.pollApp.exampleTemplates;
   var listOfRecommendedTemplates = Cambrian.pollApp.mockPeerTemplates;
   
+  /* 
+   * JAPI GROUP API
+   * These functions provide group administration functions
+   */
+
+  japi.groups.build = function(src){
+    var newGroup = {
+      name: '',
+      type: '',
+      members: [],
+      save: function(){
+        console.log("Group saved");
+      },
+      destroy: function(){
+        console.log("Group destroyed");
+      }
+    };
+
+    if(typeof src === 'string'){
+      newGroup.type = src;
+    };
+    
+    return newGroup;
+  }
+
   /* 
    * JAPI ME API
    * These functions give apps access to context about the current role
