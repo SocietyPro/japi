@@ -13,6 +13,7 @@ Cambrian.JAPI = function(){
 
   var japi = {
     apps: Cambrian.apps || {},
+    groups: Cambrian.groups,
     me: Cambrian.me,
     peer: {
       ping: {},

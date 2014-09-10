@@ -23,9 +23,21 @@
 	<div ng-controller="ApiTestController" id="ApiTestController">
 		<p>{{greeting}}</p>
 
+		<div class="pull-right">
+			<button ng-click="Reload()">Reload</button>
+		</div>
+
 		<strong>Groups</strong>
 		<ul>
-			<li ng-repeat="group in Cambrian.me.groups">{{group.name}}</li>
+			<li ng-repeat="group in Cambrian.me.groups track by group.id">
+				<button ng-click="group.destroy()">Destroy</button>
+				{{group.name}} - <i>type</i> {{group.type}}
+			</li>
+		</ul>
+
+		<strong>Peer lists</strong>
+		<ul>
+			<li ng-repeat="group in Cambrian.me.peerLists">{{group.name}}</li>
 		</ul>
 
 		<strong>Data binding test</strong>
@@ -61,6 +73,11 @@
 				<button ng-click="Cambrian.capi.roles.current = Cambrian.me.groups[0];">roles.current = </button>
 				oGroup [ {{Cambrian.me.groups[0].name}} ]
 			</li>
+		</ul>
+
+		<strong>Browsers</strong>
+		<ul>
+			<li ng-repeat="brw in Cambrian.capi.roles.current.browsers.listBrowsers()">[ {{$index}} ] ==> {{brw.title}}</li>
 		</ul>
 	</div>
 	

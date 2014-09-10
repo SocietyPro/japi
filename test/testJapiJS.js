@@ -25,6 +25,281 @@ describe("japi.js", function(){
     expect(shouldThrow).toThrow();
   });
 
+  describe("japi.groups", function() {
+    it("exists",function(){
+      expect(japi.groups).not.toEqual({});
+      expect(japi.groups).toBeDefined();
+    });
+    describe("japi.groups.list()",function() {
+      it("exists",function(){
+        expect(japi.groups.list).not.toEqual({});
+        expect(japi.groups.list).toBeDefined();
+      });
+
+      it("is a method", function() {
+        expect(typeof japi.groups.list).toEqual("function");
+      });
+
+      it('returns an array', function(){
+        var ret = japi.groups.list();
+        expect(typeof ret).toEqual('object');
+        expect(ret.length).toBeDefined();
+      });
+
+      describe('updates with newly saved groups', function(){
+        var length0 = japi.groups.list().length;
+        var testGroup2 = japi.groups.build('open');
+        it("does not show a newly created unsaved group", function(){
+          var length1 = japi.groups.list().length;
+          expect(length0).toEqual(length1);
+        });
+
+        it("shows a newly created and saved group", function(){
+          testGroup2.save();
+          var length2 = japi.groups.list().length;
+          expect(length2).toEqual(length0 +1);
+          // Clean up:
+          testGroup2.destroy();
+        })
+      })
+    });
+
+    describe("japi.groups.build()",function() {
+      it("exists",function(){
+        expect(japi.groups.build).not.toEqual({});
+        expect(japi.groups.build).toBeDefined();
+      });
+
+      it("is a method", function() {
+          expect(typeof japi.groups.build).toEqual("function");
+      });
+
+      it("throws an error when invoked with no arguments", function(){
+        function buildGroupNoArgs(){
+          japi.groups.build()
+        }
+        expect(buildGroupNoArgs).toThrow();
+      });
+
+      it("returns a group of type `open` when invoked with the argument 'open'", function(){
+        var testGroup3 = japi.groups.build('open');
+        expect(testGroup3.type).toEqual('open');
+        expect(testGroup3.members).toBeDefined();
+        testGroup3.destroy();
+      });
+
+      it("returns a group of type `broadcast` when invoked with the argument 'broadcast'", function(){
+        var testGroup3a = japi.groups.build('broadcast');
+        expect(testGroup3a.type).toEqual('broadcast');
+        expect(testGroup3a.members).toBeDefined();
+        testGroup3a.destroy();
+      });
+
+      xit("returns a cloned group when invoked with a group as the argument", function(){
+        var testGroup3 = japi.groups.build('open');
+        testGroup3.name = 'testGroupOriginal';
+        testGroup3.save();
+        var testGroup4 = japi.groups.build(testGroup3);
+        expect(testGroup4.type).toEqual('open');
+        expect(testGroup4.name).toEqual('testGroupOriginal');
+        expect(testGroup4.id).not.toEqual(testGroup3.id);
+        testGroup3.destroy();
+        testGroup4.destroy();
+      });
+    });
+
+    describe("japi.groups.get()",function(){
+      it("exists",function(){
+        expect(japi.groups.get).not.toEqual({});
+        expect(japi.groups.get).toBeDefined();
+      });
+      it("is a method", function() {
+        expect(typeof japi.groups.get).toEqual("function");
+      });
+
+      it('returns a group given its id', function(){
+        var testGroup5 = japi.groups.build('open');
+        testGroup5.save();
+        console.log(testGroup5);
+        var testGroup5a = japi.groups.get(testGroup5.id);
+        console.log(testGroup5a);
+        expect(testGroup5).toBe(testGroup5a);
+        testGroup5.destroy();
+        testGroup5a.destroy();
+      });
+    });
+
+
+    describe("japi.group instance objects", function(){
+      var testGroup = null;
+      beforeEach(function(){
+        testGroup = japi.groups.build('open');
+      });
+
+      afterEach(function(){
+        testGroup.destroy();
+      });
+
+      describe("testGroup.id",function(){
+        it("exists",function(){
+          expect(testGroup.id).not.toEqual({});
+          expect(testGroup.id).toBeDefined();
+        });
+        it("is a string", function() {
+          expect(typeof testGroup.id).toEqual("string");
+        });
+      });
+
+      describe("testGroup.name",function(){
+        it("exists",function(){
+          expect(testGroup.name).not.toEqual({});
+          expect(testGroup.name).toBeDefined();
+        });
+        it("is a string", function() {
+          expect(typeof testGroup.name).toEqual("string");
+        });
+      });
+
+      describe("testGroup.type",function(){
+        it("exists",function(){
+          expect(testGroup.type).not.toEqual({});
+          expect(testGroup.type).toBeDefined();
+        });
+
+        it("is a string", function() {
+          expect(typeof testGroup.type).toEqual("string");
+        });
+
+        it("is one of the hardcoded group types", function(){
+          var acceptableGroupTypes = [
+            "open",
+            "broadcast"
+          ];
+          var isAcceptable = 
+            (acceptableGroupTypes.indexOf(testGroup.type) === -1)
+            ? false
+            : true; 
+          expect(isAcceptable).toEqual(true);
+        });
+      });
+
+      describe("testGroup.count",function(){
+        it("exists",function(){
+          expect(testGroup.count).not.toEqual({});
+          expect(testGroup.count).toBeDefined();
+        });
+
+        it("is a number", function() {
+          expect(typeof testGroup.count).toEqual("number");
+        });
+
+        it("is 0 for a new group", function(){
+          expect(testGroup.count).toBe(0);
+        });
+
+        xit("is 1 after adding a member", function(){
+          // Don't have a japi peer interface yet
+          var testPeer = japi.peers.build();
+          testPeer.save();
+          testGroup.addPeer(testPeer);
+          expect(testGroup.count).toBe(1);
+          testGroup.removePeer(testPeer);
+          testPeer.destroy();
+        });
+      });
+
+      describe("testGroup.members[]",function(){
+        it("exists",function(){
+          expect(testGroup.members).not.toEqual({});
+          expect(testGroup.members).toBeDefined();
+        });
+
+        it("is a array", function() {
+          expect(typeof testGroup.members.length).toEqual("number");
+          expect(typeof testGroup.members).toEqual("object");
+        });
+
+        it('contains a saved peer', function(){
+          testGroup.save(); // make sure it's saved to show up in japi.groups.list
+          var list0 = japi.groups.list();
+          expect(list0.indexOf(testGroup)).not.toBe(-1);
+        });
+      });
+
+      describe("testGroup.addPeer()",function(){
+        it("exists",function(){
+          expect(testGroup.addPeer).not.toEqual({});
+          expect(testGroup.addPeer).toBeDefined();
+        });
+        it("is a method", function() {
+          expect(typeof testGroup.addPeer).toEqual("function");
+        });
+        xit("it adds a new peer", function(){
+          //UNIMPLEMENTED:
+          var testPeer = japi.peers.build();
+          var memberCount0 = testGroup.members.length;
+          testGroup.addPeer(testPeer);
+          testGroup.save();
+          var memberCount1 = testGroup.members.length;
+          expect(memberCount1).toEqual(memberCount0 + 1);
+          testPeer.destroy();
+        });
+      });
+      describe("testGroup.removePeer()",function(){
+        it("exists",function(){
+            expect(testGroup.removePeer).not.toEqual({});
+            expect(testGroup.removePeer).toBeDefined();
+        });
+        it("is a method", function() {
+          expect(typeof testGroup.removePeer).toEqual("function");
+        });
+        xit("removes a peer", function(){
+          // Test that it actually removes a peer
+        });
+      });
+
+      describe("testGroup.save()",function(){
+        it("exists",function(){
+          expect(testGroup.save).not.toEqual({});
+          expect(testGroup.save).toBeDefined();
+        });
+        it("is a method", function() {
+          expect(typeof testGroup.save).toEqual("function");
+        });
+        it("before saving, doesn't show up in japi.groups.list", function(){
+          var list0 = japi.groups.list();
+          expect(list0.indexOf(testGroup)).toBe(-1);
+        });
+        it("after saving, does show up in japi.groups.list", function(){
+          testGroup.save();
+          var list1 = japi.groups.list();
+          expect(list1.indexOf(testGroup)).not.toBe(-1);
+        });
+      });
+
+      describe("testGroup.destroy()",function(){
+        it("exists",function(){
+          expect(testGroup.destroy).not.toEqual({});
+          expect(testGroup.destroy).toBeDefined();
+        });
+        it("is a method", function() {
+          expect(typeof testGroup.destroy).toEqual("function");
+        });
+
+        it("before destroying, does show up in japi.groups.list", function(){
+          testGroup.save(); // make sure it's saved to show up in japi.groups.list
+          var list0 = japi.groups.list();
+          expect(list0.indexOf(testGroup)).not.toBe(-1);
+        });
+        it("after destroying, does not show up in japi.groups.list", function(){
+          testGroup.destroy();
+          var list1 = japi.groups.list();
+          expect(list1.indexOf(testGroup)).toBe(-1);
+        });
+      });
+    });
+  });
+
   describe("japi.me", function(){
     it("exists", function(){
       expect(japi.me).not.toEqual({});
@@ -72,51 +347,6 @@ describe("japi.js", function(){
         // Peer objects not specced
       });
     });
-
-    describe(".peerLists", function(){
-      it("exists", function(){
-        expect(japi.me.peerLists).toBeDefined();
-      });
-
-      it("is not a method", function(){
-        expect(typeof japi.me.peerLists).not.toEqual("function");
-      });
-
-      it("is an array", function(){
-        expect(typeof japi.me.peerLists.length).toEqual("number");
-        expect(typeof japi.me.peerLists).toEqual("object");
-        expect(japi.me.peerLists.push).toBeDefined();
-      });
-
-      xit("contains peerList objects", function(){
-        // peerList objects not specced
-      });
-    });
-
-    var myPL;
-    describe(".newPeerList()", function(){
-      it("creates a peerList", function(){
-        myPL = japi.me.newPeerList();
-        expect(myPL).toBeDefined;
-      });
-      it("has a string id", function(){
-        expect(myPL.id).toBeDefined;
-        expect(typeof myPL.id).toEqual("string");
-      });
-      it("has a string name", function(){
-        expect(myPL.name).toBeDefined;
-        expect(typeof myPL.name).toEqual("string");
-      });
-      it("has a .destroy method", function(){
-        expect(myPL.destroy).toBeDefined();
-        expect(typeof myPL.destroy).toEqual("function");
-      });
-      it("is destroyed when .destroy() is called", function(){
-        myPL.destroy();
-        expect(japi.me.peerLists.indexOf(myPL)).toBe(-1);
-      });
-    });
-
   });
 
 
@@ -380,7 +610,7 @@ describe("japi.js", function(){
           copyPoll = undefined;
         });
 
-        it("has all properties specced", function(){
+        xit("has all properties specced", function(){
           expect(pollTemplateSpec).toBeDefined();
         });
 
@@ -406,7 +636,7 @@ describe("japi.js", function(){
 
         it("saves the poll when copyPoll.save() is called", function(){
           copyPoll.save();
-          expect(copyPoll.status).toEqual("saved");
+          expect(copyPoll.status).toEqual("unstarted");
         });
 
         it("destroys the poll when copyPoll.destroy() is called", function(){
