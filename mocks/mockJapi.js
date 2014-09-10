@@ -480,7 +480,7 @@ Cambrian.mockJAPI = function(){
     var newGroup = {
       name: '',
       type: '',
-      members: [Cambrian.pollApp.mockTargets.peers],
+      members: Cambrian.pollApp.mockTargets.peers,
       save: function(){
         console.log("Group saved");
       },
@@ -496,10 +496,9 @@ Cambrian.mockJAPI = function(){
           ? false : true;
           
         if(found){
-          var newMembers = [];
-          newMembers.push(this.members.slice(0, index));
-          newMembers.push(this.members.slice(index+1));
-          this.members = newMembers;
+          var left = this.members.slice(0, index);
+          var right = this.members.slice(index+1);
+          this.members = left.concat(right);
         }
       },
     };
