@@ -266,7 +266,7 @@ Cambrian.pollApp.exampleTemplates = [
   { 
     id: "UUID201",
     type: "Battle Ping",
-    title: "Join Operation Red Dawn! Bring Ships!",
+    title: "Join Operation Red Dawn!",
     description: "We are going to burn the Russian Starbase. Scythe/Moa fleet is leaving at 21:00 from V-3.",
     options: [{text: "I'll be there"}, {text: "I can't go"}],
     allowMultipleChoices: false,
@@ -480,13 +480,27 @@ Cambrian.mockJAPI = function(){
     var newGroup = {
       name: '',
       type: '',
-      members: [],
+      members: Cambrian.pollApp.mockTargets.peers,
       save: function(){
         console.log("Group saved");
       },
       destroy: function(){
         console.log("Group destroyed");
-      }
+      },
+      addPeer: function(peer){
+        this.members.push(peer);
+      },
+      removePeer: function(peer){
+        var index = this.members.indexOf(peer);
+        var found = (  index == -1 )
+          ? false : true;
+          
+        if(found){
+          var left = this.members.slice(0, index);
+          var right = this.members.slice(index+1);
+          this.members = left.concat(right);
+        }
+      },
     };
 
     if(typeof src === 'string'){
@@ -696,6 +710,7 @@ Cambrian.mockJAPI = function(){
         id: japi.utils.getUUID(), 
         title: "", 
         options: [],
+        status: 'unsaved',
         allowMultipleChoices: false,
         allowComments: false,
         dismissText: "Dismiss",
