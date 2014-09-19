@@ -408,9 +408,9 @@ describe("japi.js", function(){
             expect(typeof testPoll.options.length).toEqual("number");
           });
 
-          it("has a string 'status' == 'unsaved'", function(){
+          it("has a string 'status' == 'unstarted'", function(){
             expect(typeof testPoll.status).toEqual("string");
-            expect(testPoll.status).toEqual("unsaved");
+            expect(testPoll.status).toEqual("unstarted");
           });
 
           it("has a null 'dateStarted'", function(){
