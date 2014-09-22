@@ -13,6 +13,10 @@ Cambrian.JAPI = function(){
 
   var japi = {
     apps: Cambrian.apps || {},
+    config: {
+      audioEnabled: Cambrian.Settings.AudioEnabled,
+      developerAppsDirectory: Cambrian.Settings.DeveloperAppsDirectory,
+    }, 
     groups: Cambrian.groups,
     me: Cambrian.me,
     peer: {
