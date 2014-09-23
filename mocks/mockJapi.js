@@ -423,6 +423,17 @@ Cambrian.mockJAPI = function(){
     return undefined;
   };
 
+  var startPoll = function (poll) {
+    for (var i = 0; i < listOfPolls.length; i++) {
+      if (listOfPolls[i] === poll.id) {
+        listOfPolls[i].status = "started";
+        listOfPolls[i].dateStarted = new Date();
+        return undefined;
+      };
+    }
+    return undefined;
+  }
+
   var destroyPoll = function (poll) {
     var index = listOfPolls.indexOf(poll);
 
@@ -456,8 +467,8 @@ Cambrian.mockJAPI = function(){
     };
     mock.start = function(){
       console.log('Starting mock');
-      mock.status = 'started';
-      mock.dateStarted = new Date();
+      this.status = 'started';
+      this.dateStarted = new Date();
     };
     return mock;
   });
@@ -631,9 +642,9 @@ Cambrian.mockJAPI = function(){
       // override some properties with defaults:
       tmp.id = japi.utils.getUUID();
       tmp.status = "unsaved";
-      tmp.save = tmp.save || function(){savePoll(this)};
-      tmp.start = tmp.start || function(){startPoll(this)};
-      tmp.destroy = tmp.destroy || function(){destroyPoll(this)};
+      tmp.save = function(){savePoll(this)};
+      tmp.start = function(){startPoll(this)};
+      tmp.destroy = function(){destroyPoll(this)};
       //listOfPolls.push(tmp);
       return tmp;
     };
@@ -754,7 +765,9 @@ Cambrian.mockJAPI = function(){
       };
       // override some properties with defaults:
       tmp.id = japi.utils.getUUID();
-      listOfTemplates.push(tmp);
+      tmp.save = function () {saveTemplate(this)};
+      tmp.destroy = function () {destroyTemplate(this)};
+      //listOfTemplates.push(tmp);
       return tmp;
     };
 
