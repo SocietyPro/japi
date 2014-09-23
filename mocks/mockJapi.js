@@ -23,6 +23,8 @@ Cambrian.pollApp.mockPolls = [
     },
     turnoutPercent: "82",
     allowComments: true,
+    dismissText: "",
+    submitText: "",
     options: [{text: "I'll be there", count: 42}, {text: "I can't go", count: 40}],
     comments: [
         ["darlith", "I will be 10 minutes late.", new Date("2014-07-18")],
@@ -47,6 +49,8 @@ Cambrian.pollApp.mockPolls = [
         invalid: 50
     },
     allowComments: false,
+    dismissText: "No Snacks",
+    submitText: "Crunch!",
     options: [{text: "Tortrix BBQ", count: 100}, {text: "Tortrix Crema Agria", count: 630}, {text: "Lays BBQ", count: 100}, {text: "Lays Original", count: 120}],
     comments: []
   },
@@ -66,6 +70,8 @@ Cambrian.pollApp.mockPolls = [
         invalid: 0
     },
     allowComments: false,
+    dismissText: "",
+    submitText: "",
     options: [{text: "Vote Yes", count: 50}, {text: "Vote No", count: 40}, {text: "This is an option that nobody has voted on because nobody will see it. It's just a really long line of text.", count: 0}],
     comments: []
   },
@@ -85,6 +91,8 @@ Cambrian.pollApp.mockPolls = [
         invalid: 0
     },
     allowComments: false,
+    dismissText: "",
+    submitText: "",
     options: [{text: "Yes, I'll buy BTC now", count: 0}],
     comments: []
   },
@@ -104,6 +112,8 @@ Cambrian.pollApp.mockPolls = [
         invalid: 0
     },
     allowComments: false,
+    dismissText: "",
+    submitText: "",
     options: [{text: "Yes, I can join", count: 0}, {text: "Yes, I can join and bring my megaphone", count: 0}, {text: "No, but good luck!", count: 0}, {text: "No way. Swarm Rules!", count: 0}],
     comments: []
   },
