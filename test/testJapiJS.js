@@ -360,13 +360,18 @@ describe("japi.js", function(){
 
     
     var testPoll; 
+    var testGroup;
     var testPollResults;
     beforeEach(function(){
       testPoll = japi.polls.build();
+      testGroup = japi.groups.build("broadcast");
+      testGroup.save();
+      testPoll.pollTargetId = testGroup.id;
       testPoll.save();
     });
     afterEach(function(){
       testPoll.destroy();
+      testGroup.destroy();
     });
     
     // we'll use this throughout our tests
@@ -388,9 +393,9 @@ describe("japi.js", function(){
             expect(typeof testPoll.id).toEqual("string");
           });
 
-          it("has an empty string 'type'", function(){
+          it("has type 'poll'", function(){
             expect(typeof testPoll.type).toEqual("string");
-            expect(testPoll.type).toEqual("");
+            expect(testPoll.type).toEqual("poll");
           });
 
           it("has an empty string 'title'", function(){
@@ -615,15 +620,8 @@ describe("japi.js", function(){
         });
 
         it("builds a poll when an incomplete template is passed", function(){
-          pollTemplate = {
-            title: 'Incomplete pollTemplate',
-            save: function(){
-              console.log('This is pollTemplate.save()');
-            },
-            destroy: function(){
-              console.log('This is pollTemplate.destroy()');
-            },
-          };
+          pollTemplate = japi.polls.build();
+          pollTemplate.title = "Incomplete pollTemplate";
           copyPoll = japi.polls.build(pollTemplate);
           expect(copyPoll.title).toEqual('Incomplete pollTemplate');
           expect(copyPoll.save).toBeDefined();
